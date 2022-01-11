@@ -12,8 +12,22 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 Vue.use(Vuetify)
 
+import VueI18n from 'vue-i18n'
+Vue.use(VueI18n)
+
+import es from "./locale/es";
+
+const messages = {
+    es: es
+}
+
+const i18n = new VueI18n({
+    locale: 'es', // set locale
+    messages, // set locale messages
+})
+
 import Dashboard from './views/Dashboard'
-import Products from './views/Products'
+import TypeDocumentIdentify from './views/TypeDocumentIdentify'
 
 const router = new VueRouter({
     mode: 'history',
@@ -24,9 +38,9 @@ const router = new VueRouter({
             component: Dashboard
         },
         {
-            path: '/products',
-            name: 'products',
-            component: Products,
+            path: '/tipoDocumentoIdentidad',
+            name: 'typeDocumentIdentify',
+            component: TypeDocumentIdentify,
         }
     ],
 });
@@ -40,5 +54,9 @@ const router = new VueRouter({
 const app = new Vue({
     el: '#app',
     router,
-    vuetify: new Vuetify(),
+    vuetify: new Vuetify({
+        lang: {
+            t: (key, ...params) => i18n.t(key, params)
+        }
+    }),
 });
