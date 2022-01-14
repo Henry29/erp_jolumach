@@ -4,6 +4,9 @@ window.Vue = require('vue');
 
 
 Vue.component('app-init', require('./AppInit.vue').default);
+Vue.component('app-departamento', require('./views/ubigeo/Departamento.vue').default);
+Vue.component('app-provincia', require('./views/ubigeo/Provincia.vue').default);
+Vue.component('app-distrito', require('./views/ubigeo/Distrito.vue').default);
 
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
@@ -12,22 +15,9 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 Vue.use(Vuetify)
 
-import VueI18n from 'vue-i18n'
-Vue.use(VueI18n)
-
-import es from "./locale/es";
-
-const messages = {
-    es: es
-}
-
-const i18n = new VueI18n({
-    locale: 'es', // set locale
-    messages, // set locale messages
-})
-
 import Dashboard from './views/Dashboard'
 import TypeDocumentIdentify from './views/TypeDocumentIdentify'
+import Ubigeo from './views/Ubigeo'
 
 const router = new VueRouter({
     mode: 'history',
@@ -41,6 +31,11 @@ const router = new VueRouter({
             path: '/tipoDocumentoIdentidad',
             name: 'typeDocumentIdentify',
             component: TypeDocumentIdentify,
+        },
+        {
+            path: '/ubigeo',
+            name: 'ubigeo',
+            component: Ubigeo,
         }
     ],
 });
@@ -55,8 +50,6 @@ const app = new Vue({
     el: '#app',
     router,
     vuetify: new Vuetify({
-        lang: {
-            t: (key, ...params) => i18n.t(key, params)
-        }
+
     }),
 });

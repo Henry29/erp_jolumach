@@ -4,12 +4,14 @@
       dense
       :headers="headers"
       :items="desserts"
-      sort-by="idtipodocid"
+      sort-by="iddep"
       class="elevation-1"
+      :loading="loadingTab"
+      loading-text="Cargando, Por favor esperar!"
     >
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>Tipo documento de identidad</v-toolbar-title>
+          <v-toolbar-title>Departamento</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="500px">
@@ -34,8 +36,8 @@
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.longitud"
-                        label="Longitud"
+                        v-model="editedItem.ubigeo"
+                        label="Ubigeo"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="12">
@@ -46,7 +48,7 @@
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.idtipodocid"
+                        v-model="editedItem.iddep"
                         label="Id"
                         v-show="false"
                       ></v-text-field>
@@ -107,6 +109,7 @@
 export default {
   data() {
     return {
+      loadingTab: false,
       dialog: false,
       dialogDelete: false,
       loading: true,
@@ -115,30 +118,34 @@ export default {
       text: "",
       headers: [
         {
-          text: "Id",
+          text: "N°",
           align: "start",
           sortable: true,
-          value: "idtipodocid",
+          value: "nro",
+        },
+        {
+          text: "Id",
+          value: "iddep",
           align: " d-none",
         },
         { text: "Codigo", value: "codigo" },
+        { text: "Ubigeo", value: "ubigeo" },
         { text: "Nombre", value: "nombre" },
-        { text: "Longitud", value: "longitud" },
         { text: "Acciones", value: "actions", sortable: false },
       ],
       desserts: [],
       editedIndex: -1,
       editedItem: {
-        idtipodocid: 0,
+        iddep: 0,
         codigo: "",
+        ubigeo: "",
         nombre: "",
-        longitud: 0,
       },
       defaultItem: {
-        idtipodocid: 0,
+        iddep: 0,
         codigo: "",
+        ubigeo: "",
         nombre: "",
-        longitud: 0,
       },
     };
   },
@@ -164,12 +171,15 @@ export default {
   methods: {
     initialize() {
       let me = this;
-      let url = "/typeDocumentIdentify";
+      let url = "/getUbigeo";
+      me.loadingTab = true;
       axios
         .get(url)
         .then(function (response) {
+          console.log(response);
           me.desserts = response.data;
           me.loading = false;
+          me.loadingTab = false;
         })
         .catch(function (error) {
           console.log(error);
@@ -187,15 +197,15 @@ export default {
     },
     deleteItemConfirm() {
       let me = this;
-      let id = me.editedItem.idtipodocid;
+      let id = me.editedItem.iddep;
       axios
-        .delete("/typeDocumentIdentify/borrar/" + id)
+        .delete("/ubigeo/borrar/" + id)
         .then(function (response) {
           console.log(response);
           if (response.data === 1) {
-            me.text = "Se eliminó el documento de identidad Cod: " + id;
+            me.text = "Se eliminó el departamento Cod: " + id;
           } else {
-            me.text = "No se eliminó el documento de identidad";
+            me.text = "No se eliminó el departamento";
           }
           me.dialogDelete = false;
           me.snackbar = true;
@@ -221,7 +231,7 @@ export default {
     },
     save() {
       let me = this;
-      let url = "/typeDocumentIdentify/guardar"; //Ruta que hemos creado para enviar una tarea y guardarla
+      let url = "/ubigeo/guardar"; //Ruta que hemos creado para enviar una tarea y guardarla
       let textSave = me.formSave;
       axios
         .post(url, {
@@ -233,10 +243,10 @@ export default {
             me.text =
               "Se " +
               textSave +
-              " el documento de identidad Cod: " +
-              response.data[0].idtipodocid;
+              " el departamento Cod: " +
+              response.data[0].iddep;
           } else {
-            me.text = "No se " + textSave + " el documento de identidad";
+            me.text = "No se " + textSave + " el departamento";
           }
           me.dialog = false;
           me.snackbar = true;

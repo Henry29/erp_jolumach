@@ -8,7 +8,7 @@ use PDO;
 use Exception;
 use Throwable;
 
-class TypeDocumentIdentifyController extends Controller
+class DistritoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,14 +16,19 @@ class TypeDocumentIdentifyController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function index()
+    public function index(Request $request)
     {
+
+        $idprov = $request->id;
 
         DB::beginTransaction();
 
         try {
-            $tipodoc_identidad = DB::select('SELECT pa_listartipodocumentoid()');
-            $cursor = $tipodoc_identidad[0]->pa_listartipodocumentoid;
+            $distritos = DB::select(
+                'SELECT pa_listarubigeodistrito(:idprov)',
+                ['idprov' => $idprov]
+            );
+            $cursor = $distritos[0]->pa_listarubigeodistrito;
             $cursor_data = DB::select('FETCH ALL IN "' . $cursor . '";');
             DB::commit();
         } catch (Exception $e) {
@@ -55,20 +60,21 @@ class TypeDocumentIdentifyController extends Controller
      */
     public function store(Request $request)
     {
-        $idtipodocid = $request->editedItem["idtipodocid"];
+
+        $idprov = $request->editedItem["idprov"];
+        $iddist = $request->editedItem["iddist"];
         $codigo = $request->editedItem["codigo"];
-        $nombre = $request->editedItem["nombre"];
-        $longitud = $request->editedItem["longitud"];
-        $delete = 1;
+        $ubigeo = $request->editedItem["ubigeo"];
+        $distrito = $request->editedItem["distrito"];
 
         DB::beginTransaction();
 
         try {
             $save = DB::select(
-                'SELECT pa_mantenimientodocumentoidentidad(:idtipodocid,:codigo,:nombre,:longitud)',
-                ['idtipodocid' => $idtipodocid, 'codigo' => $codigo, 'nombre' => $nombre, 'longitud' => $longitud]
+                'SELECT pa_mantenimientodistrito(:idprov,:iddist,:codigo,:ubigeo,:distrito)',
+                ['idprov' => $idprov, 'iddist' => $iddist, 'codigo' => $codigo, 'ubigeo' => $ubigeo, 'distrito' => $distrito]
             );
-            $cursor = $save[0]->pa_mantenimientodocumentoidentidad;
+            $cursor = $save[0]->pa_mantenimientodistrito;
             $cursor_data = DB::select('FETCH ALL IN "' . $cursor . '";');
             DB::commit();
         } catch (Exception $e) {
@@ -123,12 +129,12 @@ class TypeDocumentIdentifyController extends Controller
      */
     public function destroy(Request $request)
     {
-        $idtipodocid = $request->id;
+        $iddist = $request->id;
 
         DB::beginTransaction();
 
         try {
-            $delete = DB::delete('DELETE FROM tbtipodoc_identidad WHERE idtipodocid=:idtipodocid', ['idtipodocid' => $idtipodocid]);
+            $delete = DB::delete('DELETE FROM tbdistrito WHERE iddist=:iddist', ['iddist' => $iddist]);
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();

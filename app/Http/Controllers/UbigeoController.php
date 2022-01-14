@@ -8,8 +8,9 @@ use PDO;
 use Exception;
 use Throwable;
 
-class TypeDocumentIdentifyController extends Controller
+class UbigeoController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      *
@@ -22,8 +23,8 @@ class TypeDocumentIdentifyController extends Controller
         DB::beginTransaction();
 
         try {
-            $tipodoc_identidad = DB::select('SELECT pa_listartipodocumentoid()');
-            $cursor = $tipodoc_identidad[0]->pa_listartipodocumentoid;
+            $tipodoc_identidad = DB::select('SELECT pa_listardepartamentom()');
+            $cursor = $tipodoc_identidad[0]->pa_listardepartamentom;
             $cursor_data = DB::select('FETCH ALL IN "' . $cursor . '";');
             DB::commit();
         } catch (Exception $e) {
@@ -55,20 +56,19 @@ class TypeDocumentIdentifyController extends Controller
      */
     public function store(Request $request)
     {
-        $idtipodocid = $request->editedItem["idtipodocid"];
+        $iddep = $request->editedItem["iddep"];
         $codigo = $request->editedItem["codigo"];
+        $ubigeo = $request->editedItem["ubigeo"];
         $nombre = $request->editedItem["nombre"];
-        $longitud = $request->editedItem["longitud"];
-        $delete = 1;
 
         DB::beginTransaction();
 
         try {
             $save = DB::select(
-                'SELECT pa_mantenimientodocumentoidentidad(:idtipodocid,:codigo,:nombre,:longitud)',
-                ['idtipodocid' => $idtipodocid, 'codigo' => $codigo, 'nombre' => $nombre, 'longitud' => $longitud]
+                'SELECT pa_mantenimientodepartamento(:iddep,:codigo,:ubigeo,:nombre)',
+                ['iddep' => $iddep, 'codigo' => $codigo, 'ubigeo' => $ubigeo, 'nombre' => $nombre]
             );
-            $cursor = $save[0]->pa_mantenimientodocumentoidentidad;
+            $cursor = $save[0]->pa_mantenimientodepartamento;
             $cursor_data = DB::select('FETCH ALL IN "' . $cursor . '";');
             DB::commit();
         } catch (Exception $e) {
@@ -123,12 +123,12 @@ class TypeDocumentIdentifyController extends Controller
      */
     public function destroy(Request $request)
     {
-        $idtipodocid = $request->id;
+        $iddep = $request->id;
 
         DB::beginTransaction();
 
         try {
-            $delete = DB::delete('DELETE FROM tbtipodoc_identidad WHERE idtipodocid=:idtipodocid', ['idtipodocid' => $idtipodocid]);
+            $delete = DB::delete('DELETE FROM tbdepartamento WHERE iddep=:iddep', ['iddep' => $iddep]);
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();

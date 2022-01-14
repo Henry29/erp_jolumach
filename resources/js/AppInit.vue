@@ -24,6 +24,14 @@
             <v-list-item-title>Tipo de Documento</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item link to="/ubigeo">
+          <v-list-item-action>
+            <v-icon>mdi-buffer</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Ubigeo</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
