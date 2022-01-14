@@ -16,5 +16,5 @@ Jolumach ERP es un software que esta en estapa de desarrollo.
 
 ## Proximos lanzamientos de modulos:
 
--Admisión
--Tramite documentario
+- Admisión
+- Tramite documentario
