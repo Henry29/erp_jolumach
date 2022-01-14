@@ -10,7 +10,7 @@
             >
               <v-row align="center" justify="center">
                 <v-col class="text-center" cols="12">
-                  <h1 class="text-h4 font-weight-thin mb-4">Bienvenidos a Jolumach ERP</h1>
+                  <h1 class="text-h4 font-weight-thin mb-4">Bienvenidos,</h1>
                   <h4 class="subheading">Aplicación en desarrollo!</h4>
                 </v-col>
               </v-row>

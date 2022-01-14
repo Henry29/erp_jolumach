@@ -14,7 +14,7 @@
           <v-toolbar-title>Pronvicia</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-row>
-            <v-col cols="5" sm="5" md="5">
+            <v-col cols="12" sm="12" md="5">
               <v-autocomplete
                 :disabled="!isEditingProvincia"
                 v-model="model"

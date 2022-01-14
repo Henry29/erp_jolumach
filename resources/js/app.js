@@ -18,6 +18,10 @@ Vue.use(Vuetify)
 import Dashboard from './views/Dashboard'
 import TypeDocumentIdentify from './views/TypeDocumentIdentify'
 import Ubigeo from './views/Ubigeo'
+import TipoVivienda from './views/TipoVivienda'
+import GradoEstudios from './views/GradoEstudios'
+import Profesion from './views/Profesion'
+import Ugel from './views/Ugel'
 
 const router = new VueRouter({
     mode: 'history',
@@ -36,6 +40,26 @@ const router = new VueRouter({
             path: '/ubigeo',
             name: 'ubigeo',
             component: Ubigeo,
+        },
+        {
+            path: '/tipoVivienda',
+            name: 'tipoVivienda',
+            component: TipoVivienda,
+        },
+        {
+            path: '/gradoEstudios',
+            name: 'gradoEstudios',
+            component: GradoEstudios,
+        },
+        {
+            path: '/profesion',
+            name: 'profesion',
+            component: Profesion,
+        },
+        {
+            path: '/ugel',
+            name: 'ugel',
+            component: Ugel,
         }
     ],
 });

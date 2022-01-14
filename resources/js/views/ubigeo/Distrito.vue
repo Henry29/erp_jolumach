@@ -53,7 +53,6 @@
                 v-model="modelDistrito"
                 :items="itemsDistrito"
                 :loading="isLoadingDistrito"
-                :search-input.sync="searchDistrito"
                 dense
                 clearable
                 hide-details
@@ -160,19 +159,37 @@
           </v-dialog>
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
-              <v-card-title class="text-h5"
-                >¿Esta seguro de eliminar este elemento?</v-card-title
-              >
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeDelete"
-                  >Cancelar</v-btn
-                >
-                <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                  >Listo</v-btn
-                >
-                <v-spacer></v-spacer>
-              </v-card-actions>
+              <v-card-title class="text-h5">
+                ¿Esta seguro de eliminar este elemento?
+              </v-card-title>
+              <v-spacer></v-spacer>
+              <v-layout justify-center>
+                <v-card-text class="text-center">
+                  <v-icon large color="red darken-2"> mdi-delete-alert </v-icon>
+                </v-card-text>
+              </v-layout>
+              <v-spacer></v-spacer>
+              <v-layout justify-center>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    class="ma-2"
+                    dark
+                    color="indigo darken-2"
+                    @click="closeDelete"
+                  >
+                    No
+                  </v-btn>
+                  <v-btn
+                    class="ma-2"
+                    dark
+                    color="indigo darken-2"
+                    @click="deleteItemConfirm"
+                  >
+                    Si
+                  </v-btn>
+                </v-card-actions>
+              </v-layout>
             </v-card>
           </v-dialog>
           <v-snackbar v-model="snackbar">
@@ -209,7 +226,6 @@ export default {
       isLoadingDistrito: false,
       itemsDistrito: [],
       modelDistrito: null,
-      searchDistrito: null,
       tab: null,
       tabDistrito: null,
       dialog: false,

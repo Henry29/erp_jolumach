@@ -4,12 +4,12 @@
       dense
       :headers="headers"
       :items="desserts"
-      sort-by="idtipodocid"
+      sort-by="idmaestro"
       class="elevation-1"
     >
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>Tipo documento de identidad</v-toolbar-title>
+          <v-toolbar-title>Profesión</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="500px">
@@ -26,27 +26,35 @@
               <v-card-text>
                 <v-container>
                   <v-row>
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col cols="12" sm="6" md="6">
                       <v-text-field
                         v-model="editedItem.codigo"
                         label="Codigo"
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col cols="12" sm="6" md="6">
                       <v-text-field
-                        v-model="editedItem.longitud"
-                        label="Longitud"
+                        v-model="editedItem.abrev"
+                        label="Abreviatura"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="12">
                       <v-text-field
-                        v-model="editedItem.nombre"
-                        label="Nombre"
+                        v-model="editedItem.descripcion"
+                        label="Descripcion"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
+                      <v-switch
+                        v-model="editedItem.estado"
+                        label="Estado"
+                        color="indigo darken-2"
+                        hide-details
+                      ></v-switch>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.idtipodocid"
+                        v-model="editedItem.idmaestro"
                         label="Id"
                         v-show="false"
                       ></v-text-field>
@@ -133,30 +141,36 @@ export default {
       text: "",
       headers: [
         {
-          text: "Id",
-          align: "start",
+          text: "N°",
           sortable: true,
-          value: "idtipodocid",
+          value: "nro",
+        },
+        {
+          text: "Id",
+          value: "idmaestro",
           align: " d-none",
         },
         { text: "Codigo", value: "codigo" },
-        { text: "Nombre", value: "nombre" },
-        { text: "Longitud", value: "longitud" },
+        { text: "Abreviatura", value: "abrev" },
+        { text: "Descripcion", value: "descripcion" },
+        { text: "Estado", value: "estadodescripcion" },
         { text: "Acciones", value: "actions", sortable: false },
       ],
       desserts: [],
       editedIndex: -1,
       editedItem: {
-        idtipodocid: 0,
+        idmaestro: 0,
         codigo: "",
-        nombre: "",
-        longitud: 0,
+        abrev: "",
+        descripcion: "",
+        estado: true,
       },
       defaultItem: {
-        idtipodocid: 0,
+        idmaestro: 0,
         codigo: "",
-        nombre: "",
-        longitud: 0,
+        abrev: "",
+        descripcion: "",
+        estado: true,
       },
     };
   },
@@ -182,7 +196,7 @@ export default {
   methods: {
     initialize() {
       let me = this;
-      let url = "/typeDocumentIdentify";
+      let url = "/getProfesion";
       axios
         .get(url)
         .then(function (response) {
@@ -205,15 +219,15 @@ export default {
     },
     deleteItemConfirm() {
       let me = this;
-      let id = me.editedItem.idtipodocid;
+      let id = me.editedItem.idmaestro;
       axios
-        .delete("/typeDocumentIdentify/borrar/" + id)
+        .delete("/profesion/borrar/" + id)
         .then(function (response) {
           console.log(response);
           if (response.data === 1) {
-            me.text = "Se eliminó el documento de identidad Cod: " + id;
+            me.text = "Se eliminó la profesión Cod: " + id;
           } else {
-            me.text = "No se eliminó el documento de identidad";
+            me.text = "No se eliminó la profesión";
           }
           me.dialogDelete = false;
           me.snackbar = true;
@@ -239,7 +253,7 @@ export default {
     },
     save() {
       let me = this;
-      let url = "/typeDocumentIdentify/guardar"; //Ruta que hemos creado para enviar una tarea y guardarla
+      let url = "/profesion/guardar"; //Ruta que hemos creado para enviar una tarea y guardarla
       let textSave = me.formSave;
       axios
         .post(url, {
@@ -251,10 +265,10 @@ export default {
             me.text =
               "Se " +
               textSave +
-              " el documento de identidad Cod: " +
-              response.data[0].idtipodocid;
+              " la profesión Cod: " +
+              response.data[0].idmaestro;
           } else {
-            me.text = "No se " + textSave + " el documento de identidad";
+            me.text = "No se " + textSave + " la profesión";
           }
           me.dialog = false;
           me.snackbar = true;

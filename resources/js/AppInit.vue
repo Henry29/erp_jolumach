@@ -8,30 +8,30 @@
       class="indigo darken-4"
     >
       <v-list dense>
-        <v-list-item link to="/">
-          <v-list-item-action>
-            <v-icon>mdi-view-dashboard</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Panel</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item link to="/tipoDocumentoIdentidad">
-          <v-list-item-action>
-            <v-icon>mdi-buffer</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Tipo de Documento</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item link to="/ubigeo">
-          <v-list-item-action>
-            <v-icon>mdi-buffer</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Ubigeo</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+        <v-list-group
+          v-for="item in items"
+          :key="item.title"
+          v-model="item.active"
+          :prepend-icon="item.action"
+          no-action
+        >
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title v-text="item.title"></v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item
+            v-for="child in item.items"
+            :key="child.title"
+            link
+            :to="child.path"
+          >
+            <v-list-item-content>
+              <v-list-item-title v-text="child.title"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
 
@@ -61,9 +61,39 @@ export default {
   },
   data: () => ({
     drawer: null,
+    routeCurrent: null,
+    items: [
+      {
+        action: "mdi-view-dashboard",
+        active: false,
+        title: "Panel",
+        items: [{ title: "Estado del App", path: "/" }],
+      },
+      {
+        action: "mdi-buffer",
+        active: false,
+        items: [
+          { title: "Tipo de Documento", path: "/tipoDocumentoIdentidad" },
+          { title: "Ubigeo", path: "/ubigeo" },
+          { title: "Tipo de Vivienda", path: "/tipoVivienda" },
+          { title: "Grado de Estudios", path: "/gradoEstudios" },
+          { title: "Profesión", path: "/profesion" },
+          { title: "Ugel", path: "/ugel" },
+        ],
+        title: "Tabla Maestra",
+      },
+    ],
   }),
   created() {
     this.$vuetify.theme.light = true;
+    this.routeCurrent = this.$route.path;
+    this.items.forEach((e1) => {
+      e1.items.forEach((e2) => {
+        if(e2.path == this.routeCurrent){
+          e1.active = true;
+        }
+      });
+    });
   },
 };
 </script>
