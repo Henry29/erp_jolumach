@@ -79,6 +79,20 @@ export default {
           { title: "Grado de Estudios", path: "/gradoEstudios" },
           { title: "Profesión", path: "/profesion" },
           { title: "Ugel", path: "/ugel" },
+          { title: "Tipo de Planilla", path: "/tipoPlanilla" },
+          { title: "Tipo de Convenio", path: "/tipoConvenio" },
+          {
+            title: "Tipo de Institución Educativa",
+            path: "/tipoInstitucionEducativa",
+          },
+          { title: "Institución Educativa", path: "/institucionEducativa" },
+          { title: "Tipo de Zona", path: "/tipoZona" },
+          { title: "Tipo de Vía", path: "/tipoVia" },
+          { title: "Tipo de Cargo", path: "/tipoCargo" },
+          { title: "Tipo de Contrato Laboral", path: "/tipoContratoLaboral" },
+          { title: "Regimen Laboral", path: "/regimenLaboral" },
+          { title: "Tipo de Regimen Pensionario", path: "/tipoRegimenPensionario" },
+          { title: "Tipo de Discapacidad", path: "/tipoDiscapacidad" },
         ],
         title: "Tabla Maestra",
       },
@@ -89,7 +103,7 @@ export default {
     this.routeCurrent = this.$route.path;
     this.items.forEach((e1) => {
       e1.items.forEach((e2) => {
-        if(e2.path == this.routeCurrent){
+        if (e2.path == this.routeCurrent) {
           e1.active = true;
         }
       });

@@ -22,6 +22,17 @@ import TipoVivienda from './views/TipoVivienda'
 import GradoEstudios from './views/GradoEstudios'
 import Profesion from './views/Profesion'
 import Ugel from './views/Ugel'
+import TipoPlanilla from './views/TipoPlanilla'
+import TipoConvenio from './views/TipoConvenio'
+import InstitucionEducativa from './views/InstitucionEducativa'
+import TipoInstitucionEducativa from './views/TipoInstitucionEducativa'
+import TipoZona from './views/TipoZona'
+import TipoVia from './views/TipoVia'
+import TipoCargo from './views/TipoCargo'
+import TipoContratoLaboral from './views/TipoContratoLaboral'
+import RegimenLaboral from './views/RegimenLaboral'
+import TipoRegimenPensionario from './views/TipoRegimenPensionario'
+import TipoDiscapacidad from './views/TipoDiscapacidad'
 
 const router = new VueRouter({
     mode: 'history',
@@ -60,6 +71,61 @@ const router = new VueRouter({
             path: '/ugel',
             name: 'ugel',
             component: Ugel,
+        },
+        {
+            path: '/tipoPlanilla',
+            name: 'tipoPlanilla',
+            component: TipoPlanilla,
+        },
+        {
+            path: '/tipoConvenio',
+            name: 'tipoConvenio',
+            component: TipoConvenio,
+        },
+        {
+            path: '/institucionEducativa',
+            name: 'institucionEducativa',
+            component: InstitucionEducativa,
+        },
+        {
+            path: '/tipoInstitucionEducativa',
+            name: 'tipoInstitucionEducativa',
+            component: TipoInstitucionEducativa,
+        },
+        {
+            path: '/tipoZona',
+            name: 'tipoZona',
+            component: TipoZona,
+        },
+        {
+            path: '/tipoVia',
+            name: 'tipoVia',
+            component: TipoVia,
+        },
+        {
+            path: '/tipoCargo',
+            name: 'tipoCargo',
+            component: TipoCargo,
+        },
+        {
+            path: '/tipoContratoLaboral',
+            name: 'tipoContratoLaboral',
+            component: TipoContratoLaboral,
+        },
+        {
+            path: '/regimenLaboral',
+            name: 'regimenLaboral',
+            component: RegimenLaboral,
+        },
+        {
+            path: '/tipoRegimenPensionario',
+            name: 'tipoRegimenPensionario',
+            component: TipoRegimenPensionario,
+        },
+        {
+            path: '/tipoDiscapacidad',
+            name: 'tipoDiscapacidad',
+            component: TipoDiscapacidad,
         }
     ],
 });

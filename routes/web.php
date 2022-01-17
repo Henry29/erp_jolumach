@@ -46,6 +46,50 @@ Route::delete('/profesion/borrar/{id}', 'ProfesionController@destroy');
 Route::get('/getUgel', 'UgelController@index');
 Route::post('/ugel/guardar', 'UgelController@store');
 Route::delete('/ugel/borrar/{id}', 'UgelController@destroy');
+//TIPO DE PLANILLA
+Route::get('/getTipoPlanilla', 'TipoPlanillaController@index');
+Route::post('/tipoPlanilla/guardar', 'TipoPlanillaController@store');
+Route::delete('/tipoPlanilla/borrar/{id}', 'TipoPlanillaController@destroy');
+//TIPO DE CONVENIO
+Route::get('/getTipoConvenio', 'TipoConvenioController@index');
+Route::post('/tipoConvenio/guardar', 'TipoConvenioController@store');
+Route::delete('/tipoConvenio/borrar/{id}', 'TipoConvenioController@destroy');
+//TIPO INSTITUCION EDUCATIVA
+Route::get('/getTipoInstitucionEducativa', 'TipoInstitucionEducativaController@index');
+Route::post('/tipoInstitucionEducativa/guardar', 'TipoInstitucionEducativaController@store');
+Route::delete('/tipoInstitucionEducativa/borrar/{id}', 'TipoInstitucionEducativaController@destroy');
+//TIPO ZONA
+Route::get('/getTipoZona', 'TipoZonaController@index');
+Route::post('/tipoZona/guardar', 'TipoZonaController@store');
+Route::delete('/tipoZona/borrar/{id}', 'TipoZonaController@destroy');
+//TIPO VIA
+Route::get('/getTipoVia', 'TipoViaController@index');
+Route::post('/tipoVia/guardar', 'TipoViaController@store');
+Route::delete('/tipoVia/borrar/{id}', 'TipoViaController@destroy');
+//INSTITUCION EDUCATIVA
+Route::get('/getInstitucionEducativa/{id}', 'InstitucionEducativaController@index');
+Route::post('/institucionEducativa/guardar', 'InstitucionEducativaController@store');
+Route::delete('/institucionEducativa/borrar/{id}', 'InstitucionEducativaController@destroy');
+//TIPO CARGO
+Route::get('/getTipoCargo', 'TipoCargoController@index');
+Route::post('/tipoCargo/guardar', 'TipoCargoController@store');
+Route::delete('/tipoCargo/borrar/{id}', 'TipoCargoController@destroy');
+//TIPO CONTRATO LABORAL
+Route::get('/getTipoContratoLaboral', 'TipoContratoLaboralController@index');
+Route::post('/tipoContratoLaboral/guardar', 'TipoContratoLaboralController@store');
+Route::delete('/tipoContratoLaboral/borrar/{id}', 'TipoContratoLaboralController@destroy');
+//REGIMEN LABORAL
+Route::get('/getRegimenLaboral', 'RegimenLaboralController@index');
+Route::post('/regimenLaboral/guardar', 'RegimenLaboralController@store');
+Route::delete('/regimenLaboral/borrar/{id}', 'RegimenLaboralController@destroy');
+//TIPO DE REGIMEN PENSIONARIO
+Route::get('/getTipoRegimenPensionario', 'TipoRegimenPensionarioController@index');
+Route::post('/tipoRegimenPensionario/guardar', 'TipoRegimenPensionarioController@store');
+Route::delete('/tipoRegimenPensionario/borrar/{id}', 'TipoRegimenPensionarioController@destroy');
+//TIPO DE DISCAPACIDAD
+Route::get('/getTipoDiscapacidad', 'TipoDiscapacidadController@index');
+Route::post('/tipoDiscapacidad/guardar', 'TipoDiscapacidadController@store');
+Route::delete('/tipoDiscapacidad/borrar/{id}', 'TipoDiscapacidadController@destroy');
 
 Route::get('/{any}', function () {
     return view('welcome');
