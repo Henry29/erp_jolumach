@@ -1,56 +1,63 @@
 <template>
-  <v-app id="inspire">
-    <v-navigation-drawer
-      v-model="drawer"
-      app
-      clipped
-      dark
-      class="indigo darken-4"
-    >
-      <v-list dense>
-        <v-list-group
-          v-for="item in items"
-          :key="item.title"
-          v-model="item.active"
-          :prepend-icon="item.action"
-          no-action
-        >
-          <template v-slot:activator>
-            <v-list-item-content>
-              <v-list-item-title v-text="item.title"></v-list-item-title>
-            </v-list-item-content>
-          </template>
-
-          <v-list-item
-            v-for="child in item.items"
-            :key="child.title"
-            link
-            :to="child.path"
+  <v-app id="app">
+    <template v-if="!$route.path.includes('login')">
+      <v-navigation-drawer
+        v-model="drawer"
+        app
+        clipped
+        dark
+        class="indigo darken-4"
+      >
+        <v-list dense>
+          <v-list-group
+            v-for="item in items"
+            :key="item.title"
+            v-model="item.active"
+            :prepend-icon="item.action"
+            no-action
           >
-            <v-list-item-content>
-              <v-list-item-title v-text="child.title"></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
-      </v-list>
-    </v-navigation-drawer>
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title v-text="item.title"></v-list-item-title>
+              </v-list-item-content>
+            </template>
 
-    <v-app-bar app clipped-left dark class="indigo darken-4">
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Jolumach ERP</v-toolbar-title>
-    </v-app-bar>
+            <v-list-item
+              v-for="child in item.items"
+              :key="child.title"
+              link
+              :to="child.path"
+            >
+              <v-list-item-content>
+                <v-list-item-title v-text="child.title"></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-group>
+        </v-list>
+      </v-navigation-drawer>
 
+      <v-app-bar app clipped-left dark class="indigo darken-4">
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+        <v-toolbar-title>Jolumach ERP</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn icon @click="logout()">
+          <v-icon>mdi-export</v-icon>
+        </v-btn>
+      </v-app-bar>
+
+      <v-footer app dark class="indigo darken-2">
+        <v-col class="text-center">
+          <span>© {{ new Date().getFullYear() }} - Jolumach ERP</span>
+        </v-col>
+      </v-footer>
+    </template>
     <v-main>
-      <v-container>
-        <router-view></router-view>
-      </v-container>
+      <keep-alive :include="['Login']">
+        <v-container>
+          <router-view></router-view>
+        </v-container>
+      </keep-alive>
     </v-main>
-
-    <v-footer app dark class="indigo darken-2">
-      <v-col class="text-center">
-        <span>© {{ new Date().getFullYear() }} - Jolumach ERP</span>
-      </v-col>
-    </v-footer>
   </v-app>
 </template>
 
@@ -67,7 +74,7 @@ export default {
         action: "mdi-view-dashboard",
         active: false,
         title: "Panel",
-        items: [{ title: "Estado del App", path: "/" }],
+        items: [{ title: "Estado del App", path: "/dashboard" }],
       },
       {
         action: "mdi-buffer",
@@ -91,7 +98,10 @@ export default {
           { title: "Tipo de Cargo", path: "/tipoCargo" },
           { title: "Tipo de Contrato Laboral", path: "/tipoContratoLaboral" },
           { title: "Regimen Laboral", path: "/regimenLaboral" },
-          { title: "Tipo de Regimen Pensionario", path: "/tipoRegimenPensionario" },
+          {
+            title: "Tipo de Regimen Pensionario",
+            path: "/tipoRegimenPensionario",
+          },
           { title: "Tipo de Discapacidad", path: "/tipoDiscapacidad" },
         ],
         title: "Tabla Maestra",
@@ -109,5 +119,11 @@ export default {
       });
     });
   },
+  methods: {
+    logout(){
+      this.$router.push({ path: "/login" });
+      localStorage.removeItem('Authorization');
+    }
+  }
 };
 </script>
