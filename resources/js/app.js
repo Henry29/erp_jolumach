@@ -7,6 +7,10 @@ Vue.component('app-init', require('./AppInit.vue').default);
 Vue.component('app-departamento', require('./views/ubigeo/Departamento.vue').default);
 Vue.component('app-provincia', require('./views/ubigeo/Provincia.vue').default);
 Vue.component('app-distrito', require('./views/ubigeo/Distrito.vue').default);
+Vue.component('app-docIdentidad', require('./views/TypeDocumentIdentify.vue').default);
+Vue.component('app-tipSocio', require('./views/TipoSocio.vue').default);
+Vue.component('app-insEducativa', require('./views/InstitucionEducativa.vue').default);
+
 
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
@@ -35,6 +39,9 @@ import TipoContratoLaboral from './views/TipoContratoLaboral'
 import RegimenLaboral from './views/RegimenLaboral'
 import TipoRegimenPensionario from './views/TipoRegimenPensionario'
 import TipoDiscapacidad from './views/TipoDiscapacidad'
+import TipoSocio from './views/TipoSocio'
+import SolicitudIngreso from './views/SolicitudIngreso'
+
 
 import auth from './middleware/auth';
 import log from './middleware/log';
@@ -62,86 +69,153 @@ const router = new VueRouter({
             path: '/tipoDocumentoIdentidad',
             name: 'typeDocumentIdentify',
             component: TypeDocumentIdentify,
+            meta: {
+                middleware: [auth, log],
+            },
         },
         {
             path: '/ubigeo',
             name: 'ubigeo',
             component: Ubigeo,
+            meta: {
+                middleware: [auth, log],
+            },
         },
         {
             path: '/tipoVivienda',
             name: 'tipoVivienda',
             component: TipoVivienda,
+            meta: {
+                middleware: [auth, log],
+            },
         },
         {
             path: '/gradoEstudios',
             name: 'gradoEstudios',
             component: GradoEstudios,
+            meta: {
+                middleware: [auth, log],
+            },
         },
         {
             path: '/profesion',
             name: 'profesion',
             component: Profesion,
+            meta: {
+                middleware: [auth, log],
+            },
         },
         {
             path: '/ugel',
             name: 'ugel',
             component: Ugel,
+            meta: {
+                middleware: [auth, log],
+            },
         },
         {
             path: '/tipoPlanilla',
             name: 'tipoPlanilla',
             component: TipoPlanilla,
+            meta: {
+                middleware: [auth, log],
+            },
         },
         {
             path: '/tipoConvenio',
             name: 'tipoConvenio',
             component: TipoConvenio,
+            meta: {
+                middleware: [auth, log],
+            },
         },
         {
             path: '/institucionEducativa',
             name: 'institucionEducativa',
             component: InstitucionEducativa,
+            meta: {
+                middleware: [auth, log],
+            },
         },
         {
             path: '/tipoInstitucionEducativa',
             name: 'tipoInstitucionEducativa',
             component: TipoInstitucionEducativa,
+            meta: {
+                middleware: [auth, log],
+            },
         },
         {
             path: '/tipoZona',
             name: 'tipoZona',
             component: TipoZona,
+            meta: {
+                middleware: [auth, log],
+            },
         },
         {
             path: '/tipoVia',
             name: 'tipoVia',
             component: TipoVia,
+            meta: {
+                middleware: [auth, log],
+            },
         },
         {
             path: '/tipoCargo',
             name: 'tipoCargo',
             component: TipoCargo,
+            meta: {
+                middleware: [auth, log],
+            },
         },
         {
             path: '/tipoContratoLaboral',
             name: 'tipoContratoLaboral',
             component: TipoContratoLaboral,
+            meta: {
+                middleware: [auth, log],
+            },
         },
         {
             path: '/regimenLaboral',
             name: 'regimenLaboral',
             component: RegimenLaboral,
+            meta: {
+                middleware: [auth, log],
+            },
         },
         {
             path: '/tipoRegimenPensionario',
             name: 'tipoRegimenPensionario',
             component: TipoRegimenPensionario,
+            meta: {
+                middleware: [auth, log],
+            },
         },
         {
             path: '/tipoDiscapacidad',
             name: 'tipoDiscapacidad',
             component: TipoDiscapacidad,
+            meta: {
+                middleware: [auth, log],
+            },
+        },
+        {
+            path: '/tipoSocio',
+            name: 'tipoSocio',
+            component: TipoSocio,
+            meta: {
+                middleware: [auth, log],
+            },
+        },
+        {
+            path: '/solicitudIngreso',
+            name: 'solicitudIngreso',
+            component: SolicitudIngreso,
+            meta: {
+                middleware: [auth, log],
+            },
         }
     ],
 });

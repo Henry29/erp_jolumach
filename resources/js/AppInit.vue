@@ -77,6 +77,12 @@ export default {
         items: [{ title: "Estado del App", path: "/dashboard" }],
       },
       {
+        action: "mdi-view-module ",
+        active: false,
+        title: "Modulos",
+        items: [{ title: "Solicitud Ingreso Admision", path: "/solicitudIngreso" }],
+      },
+      {
         action: "mdi-buffer",
         active: false,
         items: [
@@ -103,6 +109,7 @@ export default {
             path: "/tipoRegimenPensionario",
           },
           { title: "Tipo de Discapacidad", path: "/tipoDiscapacidad" },
+          { title: "Tipo de Socio", path: "/tipoSocio" },
         ],
         title: "Tabla Maestra",
       },

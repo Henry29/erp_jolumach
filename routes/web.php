@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//API RENIEC 
+Route::get('/getDataTipoDocIden/{numDoc}', 'ApiController@index');
 
 //TIPO DE DOCUMENTO DE IDENTIDAD
 Route::get('/typeDocumentIdentify', 'TypeDocumentIdentifyController@index');
@@ -90,6 +92,10 @@ Route::delete('/tipoRegimenPensionario/borrar/{id}', 'TipoRegimenPensionarioCont
 Route::get('/getTipoDiscapacidad', 'TipoDiscapacidadController@index');
 Route::post('/tipoDiscapacidad/guardar', 'TipoDiscapacidadController@store');
 Route::delete('/tipoDiscapacidad/borrar/{id}', 'TipoDiscapacidadController@destroy');
+//TIPO DE SOCIO
+Route::get('/getTipoSocio', 'TipoSocioController@index');
+Route::post('/tipoSocio/guardar', 'TipoSocioController@store');
+Route::delete('/tipoSocio/borrar/{id}', 'TipoSocioController@destroy');
 
 Route::get('/{any}', function () {
     return view('welcome');
