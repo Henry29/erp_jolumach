@@ -110,6 +110,8 @@ export default {
           },
           { title: "Tipo de Discapacidad", path: "/tipoDiscapacidad" },
           { title: "Tipo de Socio", path: "/tipoSocio" },
+          { title: "Parentesco", path: "/parentesco" },
+          { title: "Riesgo Crediticio", path: "/riesgoCrediticio" },
         ],
         title: "Tabla Maestra",
       },

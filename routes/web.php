@@ -96,6 +96,14 @@ Route::delete('/tipoDiscapacidad/borrar/{id}', 'TipoDiscapacidadController@destr
 Route::get('/getTipoSocio', 'TipoSocioController@index');
 Route::post('/tipoSocio/guardar', 'TipoSocioController@store');
 Route::delete('/tipoSocio/borrar/{id}', 'TipoSocioController@destroy');
+//PARENTESCO
+Route::get('/getParentesco', 'ParentescoController@index');
+Route::post('/parentesco/guardar', 'ParentescoController@store');
+Route::delete('/parentesco/borrar/{id}', 'ParentescoController@destroy');
+//RIESGO CREDITICIO
+Route::get('/getRiesgoCrediticio', 'RiesgoCrediticioController@index');
+Route::post('/riesgoCrediticio/guardar', 'RiesgoCrediticioController@store');
+Route::delete('/riesgoCrediticio/borrar/{id}', 'RiesgoCrediticioController@destroy');
 
 Route::get('/{any}', function () {
     return view('welcome');

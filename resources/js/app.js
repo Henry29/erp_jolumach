@@ -10,6 +10,17 @@ Vue.component('app-distrito', require('./views/ubigeo/Distrito.vue').default);
 Vue.component('app-docIdentidad', require('./views/TypeDocumentIdentify.vue').default);
 Vue.component('app-tipSocio', require('./views/TipoSocio.vue').default);
 Vue.component('app-insEducativa', require('./views/InstitucionEducativa.vue').default);
+Vue.component('app-tipoVivienda', require('./views/TipoVivienda.vue').default);
+Vue.component('app-gradoEstudios', require('./views/GradoEstudios.vue').default);
+Vue.component('app-profesion', require('./views/Profesion.vue').default);
+Vue.component('app-parentesco', require('./views/Parentesco.vue').default);
+Vue.component('app-ugel', require('./views/Ugel.vue').default);
+Vue.component('app-tipoPlanilla', require('./views/TipoPlanilla.vue').default);
+Vue.component('app-cargo', require('./views/TipoCargo.vue').default);
+Vue.component('app-tipoContrato', require('./views/TipoContratoLaboral.vue').default);
+Vue.component('app-regimenLaboral', require('./views/RegimenLaboral.vue').default);
+Vue.component('app-regimenPensionario', require('./views/TipoRegimenPensionario.vue').default);
+Vue.component('app-riesgoCrediticio', require('./views/RiesgoCrediticio.vue').default);
 
 
 import VueRouter from 'vue-router'
@@ -41,6 +52,8 @@ import TipoRegimenPensionario from './views/TipoRegimenPensionario'
 import TipoDiscapacidad from './views/TipoDiscapacidad'
 import TipoSocio from './views/TipoSocio'
 import SolicitudIngreso from './views/SolicitudIngreso'
+import Parentesco from './views/Parentesco'
+import RiesgoCrediticio from './views/RiesgoCrediticio'
 
 
 import auth from './middleware/auth';
@@ -213,6 +226,22 @@ const router = new VueRouter({
             path: '/solicitudIngreso',
             name: 'solicitudIngreso',
             component: SolicitudIngreso,
+            meta: {
+                middleware: [auth, log],
+            },
+        },
+        {
+            path: '/parentesco',
+            name: 'parentesco',
+            component: Parentesco,
+            meta: {
+                middleware: [auth, log],
+            },
+        },
+        {
+            path: '/riesgoCrediticio',
+            name: 'riesgoCrediticio',
+            component: RiesgoCrediticio,
             meta: {
                 middleware: [auth, log],
             },
