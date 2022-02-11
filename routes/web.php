@@ -104,10 +104,13 @@ Route::delete('/parentesco/borrar/{id}', 'ParentescoController@destroy');
 Route::get('/getRiesgoCrediticio', 'RiesgoCrediticioController@index');
 Route::post('/riesgoCrediticio/guardar', 'RiesgoCrediticioController@store');
 Route::delete('/riesgoCrediticio/borrar/{id}', 'RiesgoCrediticioController@destroy');
-//SOLICITUD DE INGRESO
-Route::post('/solicitudAdmision/guardar', 'SolicitudAdmisionController@store');
-Route::post('/solicitudAdmision/imprimir', 'SolicitudAdmisionController@print');
-
+// LISTAR- TRAMITE DOCUMENTARIO 
+Route::get('/gettramitedocumentario', 'TramiteDocumentarioController@index');
+// LISTAR- USUARIO
+//Route::get('/getListaUsuario', 'UserController@index');
+Route::get('/getUsuario', 'UserController@index');
+Route::post('/usuario/guardar', 'UserController@store');
+Route::delete('/usuario/borrar/{id}', 'UserController@destroy');
 Route::get('/{any}', function () {
     return view('welcome');
 })->where('any', '.*');

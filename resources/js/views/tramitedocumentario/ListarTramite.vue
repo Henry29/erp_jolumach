@@ -1,15 +1,6 @@
-<template>
-  <v-skeleton-loader v-if="firstLoad" :loading="loading" type="table">
-    <v-data-table
-      dense
-      :headers="headers"
-      :items="desserts"
-      sort-by="idmaestro"
-      class="elevation-1"
-    >
-      <template v-slot:top>
+ <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>Tipo de Cargo</v-toolbar-title>
+          <v-toolbar-title>LISTA - Tramite Documentario</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="500px">
@@ -28,33 +19,29 @@
                   <v-row>
                     <v-col cols="12" sm="6" md="6">
                       <v-text-field
-                        v-model="editedItem.codigo"
-                        label="Codigo"
+                      
+                    label="caja 1"
+                      ></v-text-field>
+                       <v-text-field                       
+                        label="caja 2"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="6">
-                      <v-text-field
-                        v-model="editedItem.abrev"
-                        label="Abreviatura"
+
+                      <v-text-field                       
+                        label="caja 3"
+
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="12">
                       <v-text-field
-                        v-model="editedItem.descripcion"
-                        label="Descripcion"
+                       
+                        label="Motivo"
                       ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-switch
-                        v-model="editedItem.estado"
-                        label="Estado"
-                        color="indigo darken-2"
-                        hide-details
-                      ></v-switch>
-                    </v-col>
+                    </v-col>                   
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.idmaestro"
+                      
                         label="Id"
                         v-show="false"
                       ></v-text-field>
@@ -111,7 +98,7 @@
           </v-dialog>
           <v-snackbar v-model="snackbar">
             {{ text }}
-            <template v-slot:action="{ attrs }">
+            <template >
               <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
                 Cerrar
               </v-btn>
@@ -119,18 +106,8 @@
           </v-snackbar>
         </v-toolbar>
       </template>
-      <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
-      </template>
-      <template v-slot:no-data>
-        <v-btn color="primary" @click="initialize"> Cargar </v-btn>
-      </template>
-    </v-data-table>
-  </v-skeleton-loader>
-</template>
-<script>
-export default {
+      <script>
+     export default {
   data() {
     return {
       dialog: false,
@@ -151,10 +128,9 @@ export default {
           align: " d-none",
         },
         { text: "Codigo", value: "codigo" },
-        { text: "Abreviatura", value: "abrev" },
-        { text: "Descripcion", value: "descripcion" },
-        { text: "Estado", value: "estadodescripcion" },
-        { text: "Acciones", value: "actions", sortable: false },
+        { text: "tipo documento", value: "abrev" },
+        { text: "tipo tramite", value: "descripcion" },
+        { text: "requisitos", value: "estadodescripcion" },       
       ],
       desserts: [],
       editedIndex: -1,
@@ -177,10 +153,7 @@ export default {
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "Nuevo" : "Editar";
-    },
-    formSave() {
-      return this.editedIndex === -1 ? "registró" : "actualizó";
-    },
+    },    
   },
   watch: {
     dialog(val) {
@@ -193,51 +166,14 @@ export default {
   created() {
     this.initialize();
   },
-  methods: {       
-
+  methods: {//
     initialize() {
       let me = this;
-      let url = "/getTipoCargo";
+    let url = "/getTipoVivienda";
       axios
-        .get(url)
-        .then(function (response) {
-          me.desserts = response.data;
-          me.loading = false;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
-    editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
-    },
-    deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialogDelete = true;
-    },
-    deleteItemConfirm() {
-      let me = this;
-      let id = me.editedItem.idmaestro;
-      axios
-        .delete("/tipoCargo/borrar/" + id)
-        .then(function (response) {
-          console.log(response);
-          if (response.data === 1) {
-            me.text = "Se eliminó el tipo de cargo Cod: " + id;
-          } else {
-            me.text = "No se eliminó el tipo de cargo";
-          }
-          me.dialogDelete = false;
-          me.snackbar = true;
-          me.initialize();
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
+       // .get(url)
+      
+    },    
     close() {
       this.dialog = false;
       this.$nextTick(() => {
@@ -251,38 +187,10 @@ export default {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
       });
-    },
-    save() {
-      let me = this;
-      let url = "/tipoCargo/guardar"; //Ruta que hemos creado para enviar una tarea y guardarla
-      let textSave = me.formSave;
-      axios
-        .post(url, {
-          //estas variables son las que enviaremos para que crear la tarea
-          editedItem: me.editedItem,
-        })
-        .then(function (response) {
-          if (response.data[0].estado_registro === true) {
-            me.text =
-              "Se " +
-              textSave +
-              " el tipo de planilla Cod: " +
-              response.data[0].idmaestro;
-          } else {
-            me.text = "No se " + textSave + " el tipo de cargo";
-          }
-          me.dialog = false;
-          me.snackbar = true;
-          me.initialize();
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
-    clear() {
-      let me = this;
-      me.snackbar = false;
-    },
+    },  
+    
   },
 };
-</script>
+      </script>
+      
+     

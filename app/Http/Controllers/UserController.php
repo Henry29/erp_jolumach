@@ -10,9 +10,78 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
-
+use Illuminate\Support\Facades\DB;
+use PDO;
+use Exception;
+use SebastianBergmann\Environment\Console;
+use Throwable;
 class UserController extends Controller
 {
+    public function index(Request $request)
+    {       
+       
+        $sql = 'SELECT * FROM users';
+        $datos_obtenidos = DB::select($sql);        
+        return $datos_obtenidos;
+  
+    }  
+    public function store(Request $request)
+    {         
+            
+        $id = $request->editedItem["id"];
+        $name = $request->editedItem['name'];
+        $email= $request->editedItem['email'];
+        $password = $request->editedItem['password'];
+        //dd($id);     
+
+        DB::beginTransaction();
+
+        try {
+            $save = DB::select(
+                'SELECT pa_usuario_lis(:id,:name,:email,:password)',
+                ['id' => $id, 'name' => $name, 'email' => $email, 'password' => $password]);              
+            $cursor = $save[0]->pa_usuario_lis;
+            $cursor_data = DB::select('FETCH ALL IN "' . $cursor . '";');
+           // dd($id);
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            die("error: " . $e->getMessage());
+        } catch (Throwable $e) {
+            DB::rollBack();
+            die("error: " . $e->getMessage());
+        }
+          return response()->json($cursor_data);   
+
+          $sql = 'SELECT * FROM users';
+          $datos_obtenidos = DB::select($sql);        
+          return $datos_obtenidos;
+       }
+
+     
+
+       public function destroy(Request $request)
+    {
+        $id=$request->id;                    
+       DB::beginTransaction();
+
+        try {
+              $delete = DB::delete('DELETE  FROM users WHERE id=:id',['id'=>$id]); 
+         
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            die("error: " . $e->getMessage());
+        } catch (Throwable $e) {
+            DB::rollBack();
+            die("error: " . $e->getMessage());
+        }
+
+        return response()->json($delete);
+        
+
+
+    }
     public function authenticate(Request $request)
     {
     $credentials = $request->only('email', 'password');

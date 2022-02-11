@@ -2,23 +2,24 @@
   <v-skeleton-loader v-if="firstLoad" :loading="loading" type="table">
     <v-data-table
       dense
-      :headers="headers"
-      :items="desserts"
-      sort-by="idmaestro"
+      :headers="headers" 
+      :items=" desserts"   
+      sort-by="id"
       class="elevation-1"
     >
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>Tipo de Cargo</v-toolbar-title>
+          <v-toolbar-title>lista Usuarios</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
-          <v-spacer></v-spacer>
+           <v-btn color="primary" @click="initialize()"> Cargar </v-btn>
+          <v-spacer></v-spacer>  
           <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-                Nuevo
+                Nuevo Usuario
               </v-btn>
             </template>
-            <v-card>
+             <v-card>
               <v-card-title>
                 <span class="text-h5">{{ formTitle }}</span>
               </v-card-title>
@@ -28,37 +29,19 @@
                   <v-row>
                     <v-col cols="12" sm="6" md="6">
                       <v-text-field
-                        v-model="editedItem.codigo"
-                        label="Codigo"
+                        v-model="editedItem.name"
+                        label="Nombre"
                       ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="6">
                       <v-text-field
-                        v-model="editedItem.abrev"
-                        label="Abreviatura"
+                        v-model="editedItem.email"
+                        label="Correo"
                       ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="12">
-                      <v-text-field
-                        v-model="editedItem.descripcion"
-                        label="Descripcion"
+                       <v-text-field
+                       v-model="editedItem.password"
+                        label="Contraseña"
                       ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-switch
-                        v-model="editedItem.estado"
-                        label="Estado"
-                        color="indigo darken-2"
-                        hide-details
-                      ></v-switch>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.idmaestro"
-                        label="Id"
-                        v-show="false"
-                      ></v-text-field>
-                    </v-col>
+                    </v-col>                 
+                                      
                   </v-row>
                 </v-container>
               </v-card-text>
@@ -68,12 +51,12 @@
                 <v-btn color="blue darken-1" text @click="close">
                   Cancelar
                 </v-btn>
-                <v-btn color="blue darken-1" text @click="save">
+                <v-btn color="blue darken-1" text @click="save" >
                   Guardar
                 </v-btn>
               </v-card-actions>
             </v-card>
-          </v-dialog>
+             </v-dialog>              
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
               <v-card-title class="text-h5">
@@ -108,8 +91,8 @@
                 </v-card-actions>
               </v-layout>
             </v-card>
-          </v-dialog>
-          <v-snackbar v-model="snackbar">
+          </v-dialog>            
+           <v-snackbar v-model="snackbar">
             {{ text }}
             <template v-slot:action="{ attrs }">
               <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
@@ -118,18 +101,16 @@
             </template>
           </v-snackbar>
         </v-toolbar>
-      </template>
-      <template v-slot:[`item.actions`]="{ item }">
+      </template> 
+        <template v-slot:[`item.actions`]="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
         <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
       </template>
-      <template v-slot:no-data>
-        <v-btn color="primary" @click="initialize"> Cargar </v-btn>
-      </template>
     </v-data-table>
+    
   </v-skeleton-loader>
 </template>
-<script>
+ <script>
 export default {
   data() {
     return {
@@ -139,44 +120,34 @@ export default {
       firstLoad: true,
       snackbar: false,
       text: "",
-      headers: [
-        {
-          text: "N°",
-          sortable: true,
-          value: "nro",
-        },
-        {
-          text: "Id",
-          value: "idmaestro",
-          align: " d-none",
-        },
-        { text: "Codigo", value: "codigo" },
-        { text: "Abreviatura", value: "abrev" },
-        { text: "Descripcion", value: "descripcion" },
-        { text: "Estado", value: "estadodescripcion" },
-        { text: "Acciones", value: "actions", sortable: false },
+      headers: [     
+        { text: "Codigo", value: "id" },
+        { text: "nom bres", value: "name" },
+        { text: "correo", value: "email" } ,
+        { text: "Contraseña", value: "password" },
+        { text: "Acciones", value: "actions", sortable: false } 
       ],
       desserts: [],
       editedIndex: -1,
-      editedItem: {
-        idmaestro: 0,
-        codigo: "",
-        abrev: "",
-        descripcion: "",
-        estado: true,
+     editedItem: {
+        id: 0,
+        name: "",
+        email: "",
+        password: "",
+       
       },
       defaultItem: {
-        idmaestro: 0,
-        codigo: "",
-        abrev: "",
-        descripcion: "",
-        estado: true,
+        id: 0,
+        name: "",
+        email: "",
+        password: "",
       },
+
     };
   },
-  computed: {
+   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "Nuevo" : "Editar";
+      return this.editedIndex === -1 ? "Nuevo Usuario" : "Editar";
     },
     formSave() {
       return this.editedIndex === -1 ? "registró" : "actualizó";
@@ -193,22 +164,30 @@ export default {
   created() {
     this.initialize();
   },
-  methods: {       
-
-    initialize() {
+  methods: {
+     initialize()
+    {
       let me = this;
-      let url = "/getTipoCargo";
+      let url = "/getUsuario";
       axios
         .get(url)
         .then(function (response) {
           me.desserts = response.data;
           me.loading = false;
+          //  console.log( me.desserts)
         })
         .catch(function (error) {
           console.log(error);
-        });
+        });       
+    },   
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
     },
-    editItem(item) {
+     editItem(item) {
       this.editedIndex = this.desserts.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
@@ -220,15 +199,16 @@ export default {
     },
     deleteItemConfirm() {
       let me = this;
-      let id = me.editedItem.idmaestro;
+      let id = me.editedItem.id;
+      let nombre=me.editedItem.name;
       axios
-        .delete("/tipoCargo/borrar/" + id)
+        .delete("/usuario/borrar/" + id)
         .then(function (response) {
           console.log(response);
           if (response.data === 1) {
-            me.text = "Se eliminó el tipo de cargo Cod: " + id;
+            me.text = "Se eliminó el usuario Cod: " + nombre;
           } else {
-            me.text = "No se eliminó el tipo de cargo";
+            me.text = "No se eliminó el usuario";
           }
           me.dialogDelete = false;
           me.snackbar = true;
@@ -238,23 +218,9 @@ export default {
           console.log(error);
         });
     },
-    close() {
-      this.dialog = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
-    closeDelete() {
-      this.dialogDelete = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
-    save() {
+save() {
       let me = this;
-      let url = "/tipoCargo/guardar"; //Ruta que hemos creado para enviar una tarea y guardarla
+      let url = "/usuario/guardar"; //Ruta que hemos creado para enviar una tarea y guardarla
       let textSave = me.formSave;
       axios
         .post(url, {
@@ -266,10 +232,10 @@ export default {
             me.text =
               "Se " +
               textSave +
-              " el tipo de planilla Cod: " +
-              response.data[0].idmaestro;
+              " usuario : " +
+              response.data[0].id;
           } else {
-            me.text = "No se " + textSave + " el tipo de cargo";
+            me.text = "No se " + textSave + " usuario";
           }
           me.dialog = false;
           me.snackbar = true;
@@ -279,6 +245,15 @@ export default {
           console.log(error);
         });
     },
+ closeDelete() {
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+
+
     clear() {
       let me = this;
       me.snackbar = false;

@@ -80,7 +80,10 @@ export default {
         action: "mdi-view-module ",
         active: false,
         title: "Modulos",
-        items: [{ title: "Solicitud Ingreso Admision", path: "/solicitudIngreso" }],
+        items: [{ title: "Solicitud Ingreso Admision", path: "/solicitudIngreso" },
+        { title: "Tramite Documentario" },
+         { title: "Usuarios", path: "/usuario" }
+        ],
       },
       {
         action: "mdi-buffer",
@@ -93,7 +96,6 @@ export default {
           { title: "Profesión", path: "/profesion" },
           { title: "Ugel", path: "/ugel" },
           { title: "Tipo de Planilla", path: "/tipoPlanilla" },
-          { title: "Tipo de Convenio", path: "/tipoConvenio" },
           {
             title: "Tipo de Institución Educativa",
             path: "/tipoInstitucionEducativa",
@@ -112,6 +114,7 @@ export default {
           { title: "Tipo de Socio", path: "/tipoSocio" },
           { title: "Parentesco", path: "/parentesco" },
           { title: "Riesgo Crediticio", path: "/riesgoCrediticio" },
+          { title: "Test", path: "/test" },
         ],
         title: "Tabla Maestra",
       },

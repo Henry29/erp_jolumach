@@ -21,7 +21,8 @@ Vue.component('app-tipoContrato', require('./views/TipoContratoLaboral.vue').def
 Vue.component('app-regimenLaboral', require('./views/RegimenLaboral.vue').default);
 Vue.component('app-regimenPensionario', require('./views/TipoRegimenPensionario.vue').default);
 Vue.component('app-riesgoCrediticio', require('./views/RiesgoCrediticio.vue').default);
-
+Vue.component('app-listartramite', require('./views/tramitedocumentario/ListarTramite.vue').default);
+Vue.component('app-usuario', require('./views/Usuario.vue').default);
 
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
@@ -54,6 +55,9 @@ import TipoSocio from './views/TipoSocio'
 import SolicitudIngreso from './views/SolicitudIngreso'
 import Parentesco from './views/Parentesco'
 import RiesgoCrediticio from './views/RiesgoCrediticio'
+import TramiteDocumentario from './views/tramitedocumentario/ListarTramite'
+import Test from './views/Test'
+import Usuario from './views/Usuario'
 
 
 import auth from './middleware/auth';
@@ -245,6 +249,30 @@ const router = new VueRouter({
             meta: {
                 middleware: [auth, log],
             },
+        },
+        {
+            path: '/listart',
+            name: 'listartramite',
+            component: TramiteDocumentario,
+            meta: {
+                middleware: [auth, log],              
+            },
+        },
+        {
+            path: '/test',
+            name: 'test',
+            component: Test,
+            meta: {
+                middleware: [auth, log],              
+            },
+        },
+        {
+            path: '/usuario',
+            name: 'usuario',
+            component: Usuario,
+            meta: {
+                middleware: [auth, log],              
+            },
         }
     ],
 });
@@ -288,7 +316,7 @@ router.beforeEach((to, from, next) => {
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
+ * or customize the JavaScript  scaffolding to fit your unique needs.
  */
 
 const app = new Vue({
