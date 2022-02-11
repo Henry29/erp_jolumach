@@ -5,7 +5,7 @@
       <v-divider></v-divider>
       <v-stepper-step editable step="2"> Datos Personales </v-stepper-step>
       <v-divider></v-divider>
-      <v-stepper-step editable step="3"> Datos Evaluación </v-stepper-step>
+      <v-stepper-step step="3"> Datos Evaluación </v-stepper-step>
     </v-stepper-header>
     <v-stepper-items>
       <v-stepper-content step="1">
@@ -450,7 +450,7 @@
               </v-card-text>
             </v-card>
           </v-dialog>
-          <v-form>
+          <v-form ref="form" lazy-validation>
             <v-container>
               <v-row>
                 <v-col md="8">
@@ -469,6 +469,8 @@
                         :append-icon="'mdi-plus-box'"
                         @click:append="showTipoDocumento"
                         hide-details
+                        :rules="rules"
+                        required
                       >
                       </v-autocomplete>
                     </v-col>
@@ -635,7 +637,7 @@
                         v-model="dateFormatted"
                         label="Fecha de Nacimiento"
                         persistent-hint
-                        prepend-icon="mdi-calendar"
+                        append-icon="mdi-calendar"
                         v-bind="attrs"
                         @blur="date = parseDate(dateFormatted)"
                         hint="* Fecha de Nacimiento"
@@ -661,7 +663,7 @@
                 </v-col>
                 <v-col md="4">
                   <v-file-input
-                    v-model="editSolicitudIngreso.dgimage"
+                    v-model="image"
                     accept="image/*"
                     label="Foto..."
                     solo
@@ -722,7 +724,7 @@
             </v-card>
           </v-dialog>
           <v-card-title class="pb-0">Lugar de Nacimiento</v-card-title>
-          <v-form>
+          <v-form ref="lnform" lazy-validation>
             <v-container>
               <v-row>
                 <v-col md="4">
@@ -739,6 +741,8 @@
                     :append-icon="'mdi-plus-box'"
                     @click:append="showDepartamento"
                     hide-details
+                    :rules="rules"
+                    required
                   >
                   </v-autocomplete>
                 </v-col>
@@ -756,6 +760,8 @@
                     :append-icon="'mdi-plus-box'"
                     @click:append="showProvincia"
                     hide-details
+                    :rules="rules"
+                    required
                   >
                   </v-autocomplete>
                 </v-col>
@@ -774,6 +780,8 @@
                     @click:append="showDistrito"
                     @change="(event) => changeDistrito(event, itemsDistrito)"
                     hide-details
+                    :rules="rules"
+                    required
                   >
                   </v-autocomplete>
                 </v-col>
@@ -783,7 +791,7 @@
         </v-card>
         <v-card class="mb-4" color="grey lighten-1">
           <v-card-title class="pb-0">Dirección</v-card-title>
-          <v-form>
+          <v-form ref="dnform" lazy-validation>
             <v-container>
               <v-row>
                 <v-col md="4">
@@ -793,6 +801,9 @@
                     solo
                     dense
                     hide-details
+                    append-icon="mdi-close-circle"
+                    :rules="rules"
+                    required
                   ></v-text-field>
                 </v-col>
                 <v-col md="4">
@@ -825,52 +836,61 @@
               <v-row>
                 <v-col md="4">
                   <v-autocomplete
-                    :disabled="!isEditingDepartamento"
+                    :disabled="!dnisEditingDepartamento"
                     v-model="dnmodelDepartamento"
-                    :items="itemsDepartamento"
-                    :loading="isLoadingDepartamento"
+                    :items="dnitemsDepartamento"
+                    :loading="dnisLoadingDepartamento"
                     dense
                     item-text="nombre"
                     item-value="iddep"
                     label="Departamento..."
                     solo
                     :append-icon="'mdi-plus-box'"
-                    @click:append="showDepartamento"
+                    @click:append="dnshowDepartamento"
                     hide-details
+                    :rules="rules"
+                    required
                   >
                   </v-autocomplete>
                 </v-col>
                 <v-col md="4">
                   <v-autocomplete
-                    :disabled="!isEditingProvincia"
+                    :disabled="!dnisEditingProvincia"
                     v-model="dnmodelProvincia"
-                    :items="itemsProvincia"
-                    :loading="isLoadingProvincia"
+                    :items="dnitemsProvincia"
+                    :loading="dnisLoadingProvincia"
                     dense
                     item-text="nombre"
                     item-value="idprov"
                     label="Provincia..."
                     solo
                     :append-icon="'mdi-plus-box'"
-                    @click:append="showProvincia"
+                    @click:append="dnshowProvincia"
                     hide-details
+                    :rules="rules"
+                    required
                   >
                   </v-autocomplete>
                 </v-col>
                 <v-col md="4">
                   <v-autocomplete
-                    :disabled="!isEditingDistrito"
+                    :disabled="!dnisEditingDistrito"
                     v-model="dnmodelDistrito"
-                    :items="itemsDistrito"
-                    :loading="isLoadingDistrito"
+                    :items="dnitemsDistrito"
+                    :loading="dnisLoadingDistrito"
                     dense
                     item-text="distrito"
                     item-value="iddist"
                     label="Distrito..."
                     solo
                     :append-icon="'mdi-plus-box'"
-                    @click:append="showDistrito"
+                    @change="
+                      (event) => dnchangeDistrito(event, dnitemsDistrito)
+                    "
+                    @click:append="dnshowDistrito"
                     hide-details
+                    :rules="rules"
+                    required
                   >
                   </v-autocomplete>
                 </v-col>
@@ -961,7 +981,7 @@
         </v-dialog>
         <v-card class="mb-4" color="grey lighten-1">
           <v-card-title class="pb-0">Conyuge</v-card-title>
-          <v-form>
+          <v-form ref="cyform" lazy-validation>
             <v-container>
               <v-row>
                 <v-col md="3">
@@ -978,6 +998,8 @@
                     :append-icon="'mdi-plus-box'"
                     @click:append="showTipoDocumento"
                     hide-details
+                    :rules="rules"
+                    required
                   >
                   </v-autocomplete>
                 </v-col>
@@ -1060,7 +1082,7 @@
                         v-model="cydateFormatted"
                         label="Fecha de Nacimiento"
                         persistent-hint
-                        prepend-icon="mdi-calendar"
+                        append-icon="mdi-calendar"
                         v-bind="attrs"
                         @blur="cydate = parseDate(cydateFormatted)"
                         hint="* Fecha de Nacimiento"
@@ -1124,7 +1146,7 @@
               </v-flex>
             </v-layout>
           </v-card-title>
-          <v-form>
+          <v-form ref="frform" lazy-validation>
             <v-container>
               <v-row>
                 <v-col md="4">
@@ -1143,6 +1165,8 @@
                     :append-icon="'mdi-plus-box'"
                     @click:append="showTipoDocumento"
                     hide-details
+                    :rules="rules"
+                    required
                   >
                   </v-autocomplete>
                 </v-col>
@@ -1154,6 +1178,8 @@
                     dense
                     hide-details
                     :disabled="elementActive.frActive2"
+                    :rules="rules"
+                    required
                   ></v-text-field>
                 </v-col>
                 <v-col md="4">
@@ -1170,6 +1196,8 @@
                     :append-icon="'mdi-plus-box'"
                     @click:append="showParentesco"
                     hide-details
+                    required
+                    :rules="rules"
                   >
                   </v-autocomplete>
                 </v-col>
@@ -1183,6 +1211,8 @@
                     dense
                     hide-details
                     :disabled="elementActive.frActive4"
+                    :rules="rules"
+                    required
                   ></v-text-field>
                 </v-col>
                 <v-col md="4">
@@ -1232,53 +1262,64 @@
                 <v-col md="4">
                   <v-autocomplete
                     :disabled="
-                      !isEditingDepartamento || elementActive.frActive9
+                      !frisEditingDepartamento || elementActive.frActive9
                     "
                     v-model="frmodelDepartamento"
-                    :items="itemsDepartamento"
-                    :loading="isLoadingDepartamento"
+                    :items="fritemsDepartamento"
+                    :loading="frisLoadingDepartamento"
                     dense
                     item-text="nombre"
                     item-value="iddep"
                     label="Departamento..."
                     solo
                     :append-icon="'mdi-plus-box'"
-                    @click:append="showDepartamento"
+                    @click:append="frshowDepartamento"
                     hide-details
+                    :rules="rules"
+                    required
                   >
                   </v-autocomplete>
                 </v-col>
                 <v-col md="4">
                   <v-autocomplete
-                    :disabled="!isEditingProvincia || elementActive.frActive10"
+                    :disabled="
+                      !frisEditingProvincia || elementActive.frActive10
+                    "
                     v-model="frmodelProvincia"
-                    :items="itemsProvincia"
-                    :loading="isLoadingProvincia"
+                    :items="fritemsProvincia"
+                    :loading="frisLoadingProvincia"
                     dense
                     item-text="nombre"
                     item-value="idprov"
                     label="Provincia..."
                     solo
                     :append-icon="'mdi-plus-box'"
-                    @click:append="showProvincia"
+                    @click:append="frshowProvincia"
                     hide-details
+                    :rules="rules"
+                    required
                   >
                   </v-autocomplete>
                 </v-col>
                 <v-col md="4">
                   <v-autocomplete
-                    :disabled="!isEditingDistrito || elementActive.frActive11"
+                    :disabled="!frisEditingDistrito || elementActive.frActive11"
                     v-model="frmodelDistrito"
-                    :items="itemsDistrito"
-                    :loading="isLoadingDistrito"
+                    :items="fritemsDistrito"
+                    :loading="frisLoadingDistrito"
                     dense
                     item-text="distrito"
                     item-value="iddist"
                     label="Distrito..."
                     solo
                     :append-icon="'mdi-plus-box'"
-                    @click:append="showDistrito"
+                    @click:append="frshowDistrito"
+                    @change="
+                      (event) => frchangeDistrito(event, fritemsDistrito)
+                    "
                     hide-details
+                    :rules="rules"
+                    required
                   >
                   </v-autocomplete>
                 </v-col>
@@ -1446,7 +1487,7 @@
                         v-model="dtdateFormatted"
                         label="Fecha de Nacimiento"
                         persistent-hint
-                        prepend-icon="mdi-calendar"
+                        append-icon="mdi-calendar"
                         v-bind="attrs"
                         @blur="dtdate = parseDate(dtdateFormatted)"
                         hint="* Fecha de Ingreso"
@@ -1477,7 +1518,7 @@
         </v-card>
         <v-card class="mb-4" color="grey lighten-1">
           <v-card-title class="pb-0">Boleta</v-card-title>
-          <v-form>
+          <v-form ref="btform" lazy-validation>
             <v-container>
               <v-row>
                 <v-col md="4" class="pb-0">
@@ -1495,13 +1536,15 @@
                         v-model="btdateFormatted2"
                         label="Fecha Boleta"
                         persistent-hint
-                        prepend-icon="mdi-calendar"
+                        append-icon="mdi-calendar"
                         v-bind="attrs"
                         @blur="btdate2 = parseDate(btdateFormatted2)"
                         hint="* Fecha de Boleta"
                         v-on="on"
                         dense
                         solo
+                        :rules="rules"
+                        required
                       ></v-text-field>
                     </template>
                     <v-date-picker
@@ -1526,7 +1569,7 @@
                         v-model="btdateFormatted3"
                         label="Fecha Término"
                         persistent-hint
-                        prepend-icon="mdi-calendar"
+                        append-icon="mdi-calendar"
                         v-bind="attrs"
                         @blur="btdate3 = parseDate(btdateFormatted3)"
                         hint="* Fecha de Término"
@@ -1639,6 +1682,8 @@
                     label="Observación..."
                     solo
                     dense
+                    required
+                    :rules="rules"
                   ></v-textarea>
                 </v-col>
               </v-row>
@@ -1647,9 +1692,8 @@
         </v-card>
         <v-row>
           <v-col class="text-right">
-            <v-btn color="primary"> Guardar </v-btn>
-            <v-btn color="primary"> Salir </v-btn>
-            <v-btn color="primary"> Imprimir </v-btn>
+            <v-btn color="primary" @click="guardar1"> Guardar </v-btn>
+            <v-btn color="primary" @click="imprimir"> Imprimir </v-btn>
           </v-col>
         </v-row>
       </v-stepper-content>
@@ -1672,6 +1716,9 @@
 export default {
   data(vm) {
     return {
+      idpersona: "",
+      idconyuge: "",
+      rules: [(v) => !!v || "Este campo is requerido"],
       editSolicitudIngreso: {
         dgidSolicitudIngreso: 0,
         dgid_tipDocIden: 0,
@@ -1690,7 +1737,7 @@ export default {
         dgfec_nacimiento: "",
         dgsexo: "",
         dgemail: "",
-        dgimage: new Blob(),
+        dgimage: null,
         //
         lniddep: 0,
         lnidprov: 0,
@@ -1703,6 +1750,7 @@ export default {
         dniddep: 0,
         dnidprov: 0,
         dniddist: 0,
+        dncodigo: "",
         //
         dpid_gradoEstudio: 0,
         dpid_profesion: 0,
@@ -1731,6 +1779,7 @@ export default {
         friddep: 0,
         fridprov: 0,
         friddist: 0,
+        frcodigo: "",
         //
         dtid_ugel: 0,
         dtid_tipoPlanilla: 0,
@@ -1776,6 +1825,9 @@ export default {
         { id: "7", nombre: "Séptima Escala Magisterial" },
         { id: "8", nombre: "Octava Escala Magisterial" },
       ],
+      validarReferencia: false,
+      image: null,
+      imageName: "",
       isEditingTipoDocumento: false,
       isLoadingTipoDocumento: false,
       itemsTipoDocumento: [],
@@ -1790,20 +1842,38 @@ export default {
       isLoadingDepartamento: false,
       itemsDepartamento: [],
       modelDepartamento: null,
+      dnisEditingDepartamento: false,
+      dnisLoadingDepartamento: false,
+      dnitemsDepartamento: [],
       dnmodelDepartamento: null,
+      frisEditingDepartamento: false,
+      frisLoadingDepartamento: false,
+      fritemsDepartamento: [],
       frmodelDepartamento: null,
       isEditingProvincia: false,
       isLoadingProvincia: false,
       itemsProvincia: [],
       modelProvincia: null,
+      dnisEditingProvincia: false,
+      dnisLoadingProvincia: false,
+      dnitemsProvincia: [],
       dnmodelProvincia: null,
+      frisEditingProvincia: false,
+      frisLoadingProvincia: false,
+      fritemsProvincia: [],
       frmodelProvincia: null,
       isEditingDistrito: false,
       isLoadingDistrito: false,
       itemsDistrito: [],
       modelDistrito: null,
       dnmodelDistrito: null,
+      dnisEditingDistrito: false,
+      dnisLoadingDistrito: false,
+      dnitemsDistrito: [],
       frmodelDistrito: null,
+      frisEditingDistrito: false,
+      frisLoadingDistrito: false,
+      fritemsDistrito: [],
       isEditingTipoVivienda: false,
       isLoadingTipoVivienda: false,
       itemsTipoVivienda: [],
@@ -1942,12 +2012,12 @@ export default {
     computedDateFormatted() {
       return this.formatDate(this.date);
     },
-    cancularLiquido: function(){
+    cancularLiquido: function () {
       let liquido =
-        (parseFloat(this.editSolicitudIngreso.btsueldo) +
+        parseFloat(this.editSolicitudIngreso.btsueldo) +
         parseFloat(this.editSolicitudIngreso.btescolaridad) +
         parseFloat(this.editSolicitudIngreso.btgratificacion) +
-        parseFloat(this.editSolicitudIngreso.btincentivos)) -
+        parseFloat(this.editSolicitudIngreso.btincentivos) -
         parseFloat(this.editSolicitudIngreso.btotrosdesct);
 
       this.editSolicitudIngreso.btliquido = liquido;
@@ -1955,6 +2025,11 @@ export default {
     },
   },
   watch: {
+    image(val) {
+      if (val != null) {
+        this.imageName = val.name;
+      }
+    },
     btmodelRiesgoCrediticio(val) {
       if (val != null) {
         this.editSolicitudIngreso.btid_riesCrediticio = val;
@@ -2004,6 +2079,7 @@ export default {
       console.log(val);
       if (val != null) {
         if (val == true) {
+          this.validarReferencia = true;
           this.elementActive = {
             frActive1: false,
             frActive2: false,
@@ -2018,6 +2094,7 @@ export default {
             frActive11: false,
           };
         } else {
+          this.validarReferencia = false;
           this.elementActive = {
             frActive1: true,
             frActive2: true,
@@ -2058,19 +2135,19 @@ export default {
     dnmodelDepartamento(val) {
       if (val != null) {
         this.editSolicitudIngreso.dniddep = val;
-        this.itemsProvincia = [];
-        this.initializeProvincia(val);
+        this.dnitemsProvincia = [];
+        this.dninitializeProvincia(val);
       } else {
-        this.itemsProvincia = [];
+        this.dnitemsProvincia = [];
       }
     },
     frmodelDepartamento(val) {
       if (val != null) {
         this.editSolicitudIngreso.friddep = val;
-        this.itemsProvincia = [];
-        this.initializeProvincia(val);
+        this.fritemsProvincia = [];
+        this.frinitializeProvincia(val);
       } else {
-        this.itemsProvincia = [];
+        this.fritemsProvincia = [];
       }
     },
     modelProvincia(val) {
@@ -2085,19 +2162,19 @@ export default {
     dnmodelProvincia(val) {
       if (val != null) {
         this.editSolicitudIngreso.dnidprov = val;
-        this.itemsDistrito = [];
-        this.initializeDistrito(val);
+        this.dnitemsDistrito = [];
+        this.dninitializeDistrito(val);
       } else {
-        this.itemsDistrito = [];
+        this.dnitemsDistrito = [];
       }
     },
     frmodelProvincia(val) {
       if (val != null) {
         this.editSolicitudIngreso.fridprov = val;
-        this.itemsDistrito = [];
-        this.initializeDistrito(val);
+        this.fritemsDistrito = [];
+        this.frinitializeDistrito(val);
       } else {
-        this.itemsDistrito = [];
+        this.fritemsDistrito = [];
       }
     },
     modelDistrito(val) {
@@ -2172,6 +2249,8 @@ export default {
     this.initializeTipoSocio();
     this.initializeTipoVivienda();
     this.initializeDepartamento();
+    this.dninitializeDepartamento();
+    this.frinitializeDepartamento();
     this.initializeGradoEstudios();
     this.initializeProfesion();
     this.initializeParentesco();
@@ -2186,11 +2265,249 @@ export default {
     this.initializeRiesgoCrediticio();
   },
   methods: {
+    async guardar1() {
+      let me = this;
+
+      this.editSolicitudIngreso.btfec_boleta = this.btdate2;
+
+      let validate = await this.$refs.form.validate();
+      let lnvalidate = await this.$refs.lnform.validate();
+      let dnvalidate = await this.$refs.dnform.validate();
+      let cyvalidate = await this.$refs.cyform.validate();
+      let frvalidate = true;
+      if (this.validarReferencia) {
+        frvalidate = await this.$refs.frform.validate();
+      }
+      let btvalidate = await this.$refs.btform.validate();
+
+      console.log(
+        validate,
+        lnvalidate,
+        dnvalidate,
+        cyvalidate,
+        frvalidate,
+        btvalidate
+      );
+
+      if (
+        !(
+          validate &&
+          lnvalidate &&
+          dnvalidate &&
+          cyvalidate &&
+          frvalidate &&
+          btvalidate
+        )
+      ) {
+        return;
+      }
+
+      let url = "/solicitudAdmision/guardar";
+
+      let value_guardar1 = "S";
+      let value_guardar2 = "C";
+      let value_guardar3 = "F";
+      let idcargo = 0;
+      let estado = true;
+      let tipoubinac = 0;
+      let tipoubidir = 0;
+      let tiposoc = null;
+      let titulo = null;
+      let nrohijos = 0;
+      let estado_per = "A";
+      let nacionalidad = "P";
+      let tiposocio = null;
+      let idugel = 0;
+      let lugarnac = null;
+      let haburbana = null;
+      let registrado = "TEST";
+      let codpers = null;
+      let idusu = 11070;
+      let idsuc = 0;
+      let secuencia = 1;
+      let obj_familiar = null;
+
+      let obj = {
+        0: value_guardar1,
+        1: this.editSolicitudIngreso.dgape_paterno,
+        2: this.editSolicitudIngreso.dgape_materno,
+        3: this.editSolicitudIngreso.dgnombre,
+        4: this.editSolicitudIngreso.dgid_tipDocIden,
+        5: this.editSolicitudIngreso.dgnum_tipoDocIden,
+        6: this.editSolicitudIngreso.dndireccion,
+        7: this.editSolicitudIngreso.dgtelefono,
+        8: this.editSolicitudIngreso.dgsexo,
+        9: this.editSolicitudIngreso.dgest_civil,
+        10: this.editSolicitudIngreso.dgemail,
+        11: this.editSolicitudIngreso.dgfec_nacimiento,
+        12: idcargo,
+        13: estado,
+        14: this.editSolicitudIngreso.lncodigo,
+        15: tipoubinac,
+        16: tipoubidir,
+        17: this.editSolicitudIngreso.dncodigo,
+        18: tiposoc,
+        19: titulo,
+        20: nrohijos,
+        21: estado_per,
+        22: this.editSolicitudIngreso.dgcod_cargo,
+        23: this.editSolicitudIngreso.dgcod_carben,
+        24: nacionalidad,
+        25: tiposocio,
+        26: idugel,
+        27: this.editSolicitudIngreso.dgmovil,
+        28: lugarnac,
+        29: haburbana,
+        30: registrado,
+        31: this.imageName,
+        32: codpers,
+        33: idusu,
+        34: idsuc,
+        35: this.editSolicitudIngreso.dniddist,
+      };
+
+      let obj_direccion = {
+        0: value_guardar1,
+        1: this.editSolicitudIngreso.dncodigo,
+        2: 0,
+        3: 0,
+        4: null,
+        5: 0,
+        6: this.editSolicitudIngreso.dndireccion,
+        7: this.editSolicitudIngreso.dnreferencia,
+        8: this.editSolicitudIngreso.dnid_tipvi,
+        9: null,
+        10: secuencia,
+        11: tipoubinac,
+        12: this.editSolicitudIngreso.lncodigo,
+        13: null,
+        14: null,
+        15: null,
+        16: null,
+        17: null,
+        18: 0,
+      };
+
+      let obj_conyuge = {
+        0: value_guardar2,
+        1: this.editSolicitudIngreso.cyid_tipDocIden,
+        2: this.editSolicitudIngreso.cynum_tipoDocIden,
+        3: this.editSolicitudIngreso.cynombre,
+        4: this.editSolicitudIngreso.cyape_paterno,
+        5: this.editSolicitudIngreso.cyape_materno,
+        6: null,
+        7: this.editSolicitudIngreso.cysexo,
+        8: this.editSolicitudIngreso.cyest_civil,
+        9: "A",
+        10: true,
+        11: this.editSolicitudIngreso.cytelefono,
+        12: this.editSolicitudIngreso.cymovil,
+        13: this.editSolicitudIngreso.cycar_familiar,
+        14: this.editSolicitudIngreso.cyfec_nacimiento,
+        15: registrado,
+        16: idusu,
+      };
+
+      if (this.validarReferencia) {
+        obj_familiar = {
+          0: value_guardar3,
+          1: this.editSolicitudIngreso.frnum_tipoDocIden,
+          2: this.editSolicitudIngreso.frid_tipDocIden,
+          3: this.editSolicitudIngreso.frnombre,
+          4: this.editSolicitudIngreso.frape_paterno,
+          5: this.editSolicitudIngreso.frape_materno,
+          6: null,
+          7: this.editSolicitudIngreso.frcodigo,
+          8: 0,
+          9: this.editSolicitudIngreso.frdireccion,
+          10: this.editSolicitudIngreso.frtelefono,
+          11: "A",
+          12: true,
+          13: this.editSolicitudIngreso.frid_parentesco,
+          14: registrado,
+          15: idusu,
+        };
+      } else {
+        obj_familiar = {};
+      }
+
+      let obj_datopersona = {
+        0: this.editSolicitudIngreso.dpid_gradoEstudio,
+        1: this.editSolicitudIngreso.dpid_profesion,
+        2: this.editSolicitudIngreso.dpid_nivMagisterial,
+        3: this.editSolicitudIngreso.dtid_convenio,
+        4: this.editSolicitudIngreso.dtid_insEducativa,
+        5: this.editSolicitudIngreso.dtid_cargo,
+        6: this.editSolicitudIngreso.dtid_tipoContrato,
+        7: this.editSolicitudIngreso.dtid_regimenLaboral,
+        8: this.editSolicitudIngreso.dtid_regimenPensionario,
+        9: this.editSolicitudIngreso.dtfec_ingreso,
+        10: this.editSolicitudIngreso.dtanhServicio,
+        11: null,
+      };
+
+      let obj_solicitudadmision = {
+        0: this.editSolicitudIngreso.btfec_boleta,
+        1: 0,
+        2: null,
+        3: null,
+        4: this.editSolicitudIngreso.btsueldo,
+        5: this.editSolicitudIngreso.btimponible,
+        6: this.editSolicitudIngreso.btescolaridad,
+        7: this.editSolicitudIngreso.btgratificacion,
+        8: this.editSolicitudIngreso.btliquido,
+        9: this.editSolicitudIngreso.btid_riesCrediticio,
+        10: this.editSolicitudIngreso.btotrosdesct,
+        11: this.editSolicitudIngreso.btincentivos,
+        12: this.editSolicitudIngreso.btobservacion,
+        13: registrado,
+        14: this.editSolicitudIngreso.btfec_termino,
+      };
+
+      axios
+        .post(url, {
+          obj: obj,
+          obj_direccion: obj_direccion,
+          obj_conyuge: obj_conyuge,
+          obj_familiar: obj_familiar,
+          obj_datopersona: obj_datopersona,
+          obj_solicitudadmision: obj_solicitudadmision,
+        })
+        .then(function (response) {
+          me.idpersona = response.data[0].idpersona_socio;
+          me.idconyuge = response.data[0].idpersona_conyuge;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    imprimir() {
+      let url = "/solicitudAdmision/imprimir";
+      axios
+        .post(url, {
+          idpersona: this.idpersona,
+          idconyuge: this.idconyuge,
+        },{responseType: 'arraybuffer'})
+        .then(function (response) {
+          let blob = new Blob([response.data], { type: "application/pdf" });
+          let link = document.createElement("a");
+          link.href = window.URL.createObjectURL(blob);
+          link.download = "test.pdf";
+          link.click();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
     isNumber(evt) {
-      evt = (evt) ? evt : window.event;
-      var charCode = (evt.which) ? evt.which : evt.keyCode;
-      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
-        evt.preventDefault();;
+      evt = evt ? evt : window.event;
+      var charCode = evt.which ? evt.which : evt.keyCode;
+      if (
+        charCode > 31 &&
+        (charCode < 48 || charCode > 57) &&
+        charCode !== 46
+      ) {
+        evt.preventDefault();
       } else {
         return true;
       }
@@ -2199,6 +2516,20 @@ export default {
       itemsDistrito.forEach((distrito) => {
         if (distrito.iddist == event) {
           this.editSolicitudIngreso.lncodigo = distrito.ubigeo;
+        }
+      });
+    },
+    dnchangeDistrito(event, dnitemsDistrito) {
+      dnitemsDistrito.forEach((distrito) => {
+        if (distrito.iddist == event) {
+          this.editSolicitudIngreso.dncodigo = distrito.ubigeo;
+        }
+      });
+    },
+    frchangeDistrito(event, fritemsDistrito) {
+      fritemsDistrito.forEach((distrito) => {
+        if (distrito.iddist == event) {
+          this.editSolicitudIngreso.frcodigo = distrito.ubigeo;
         }
       });
     },
@@ -2412,6 +2743,50 @@ export default {
     showTipoVivienda() {
       this.dialogFullScreanTipoVivienda = true;
     },
+    frinitializeDistrito(val) {
+      if (this.fritemsDistrito.length > 0) return;
+
+      this.frisLoadingDistrito = true;
+      let id = val;
+
+      let url = "/getDistrito/" + id;
+      axios
+        .get(url)
+        .then((res) => {
+          console.log(res);
+          this.fritemsDistrito = res.data;
+          this.frisEditingDistrito = true;
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => (this.frisLoadingDistrito = false));
+    },
+    frshowDistrito() {
+      this.dialogFullScreanDistrito = true;
+    },
+    dninitializeDistrito(val) {
+      if (this.dnitemsDistrito.length > 0) return;
+
+      this.dnisLoadingDistrito = true;
+      let id = val;
+
+      let url = "/getDistrito/" + id;
+      axios
+        .get(url)
+        .then((res) => {
+          console.log(res);
+          this.dnitemsDistrito = res.data;
+          this.dnisEditingDistrito = true;
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => (this.dnisLoadingDistrito = false));
+    },
+    dnshowDistrito() {
+      this.dialogFullScreanDistrito = true;
+    },
     initializeDistrito(val) {
       if (this.itemsDistrito.length > 0) return;
 
@@ -2456,6 +2831,50 @@ export default {
     showProvincia() {
       this.dialogFullScreanProvincia = true;
     },
+    dninitializeProvincia(val) {
+      if (this.dnitemsProvincia.length > 0) return;
+
+      this.dnisLoadingProvincia = true;
+      let id = val;
+
+      let url = "/getProvincia/" + id;
+      axios
+        .get(url)
+        .then((res) => {
+          console.log(res);
+          this.dnitemsProvincia = res.data;
+          this.dnisEditingProvincia = true;
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => (this.dnisLoadingProvincia = false));
+    },
+    dnshowProvincia() {
+      this.dialogFullScreanProvincia = true;
+    },
+    frinitializeProvincia(val) {
+      if (this.fritemsProvincia.length > 0) return;
+
+      this.frisLoadingProvincia = true;
+      let id = val;
+
+      let url = "/getProvincia/" + id;
+      axios
+        .get(url)
+        .then((res) => {
+          console.log(res);
+          this.fritemsProvincia = res.data;
+          this.frisEditingProvincia = true;
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => (this.frisLoadingProvincia = false));
+    },
+    frshowProvincia() {
+      this.dialogFullScreanProvincia = true;
+    },
     initializeDepartamento() {
       if (this.itemsDepartamento.length > 0) return;
 
@@ -2475,6 +2894,48 @@ export default {
         .finally(() => (this.isLoadingDepartamento = false));
     },
     showDepartamento() {
+      this.dialogFullScreanDepartamento = true;
+    },
+    dninitializeDepartamento() {
+      if (this.dnitemsDepartamento.length > 0) return;
+
+      this.dnisLoadingDepartamento = true;
+
+      let url = "/getUbigeo";
+      axios
+        .get(url)
+        .then((res) => {
+          console.log(res);
+          this.dnitemsDepartamento = res.data;
+          this.dnisEditingDepartamento = true;
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => (this.dnisLoadingDepartamento = false));
+    },
+    dnshowDepartamento() {
+      this.dialogFullScreanDepartamento = true;
+    },
+    frinitializeDepartamento() {
+      if (this.fritemsDepartamento.length > 0) return;
+
+      this.frisLoadingDepartamento = true;
+
+      let url = "/getUbigeo";
+      axios
+        .get(url)
+        .then((res) => {
+          console.log(res);
+          this.fritemsDepartamento = res.data;
+          this.frisEditingDepartamento = true;
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => (this.frisLoadingDepartamento = false));
+    },
+    frshowDepartamento() {
       this.dialogFullScreanDepartamento = true;
     },
     formatDate(date) {
