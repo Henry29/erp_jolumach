@@ -2,7 +2,7 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-
+/* --------------------------- Components Generals -------------------------- */
 Vue.component('app-init', require('./AppInit.vue').default);
 Vue.component('app-departamento', require('./views/ubigeo/Departamento.vue').default);
 Vue.component('app-provincia', require('./views/ubigeo/Provincia.vue').default);
@@ -21,9 +21,26 @@ Vue.component('app-tipoContrato', require('./views/TipoContratoLaboral.vue').def
 Vue.component('app-regimenLaboral', require('./views/RegimenLaboral.vue').default);
 Vue.component('app-regimenPensionario', require('./views/TipoRegimenPensionario.vue').default);
 Vue.component('app-riesgoCrediticio', require('./views/RiesgoCrediticio.vue').default);
-Vue.component('app-listartramite', require('./views/tramitedocumentario/ListarTramite.vue').default);
-Vue.component('app-usuario', require('./views/Usuario.vue').default);
+/* -------------------------------- Admision -------------------------------- */
+Vue.component('app-solicitudIngreso', require('./views/SolicitudIngreso.vue').default);
+/* -------------------- // Components TramiteDocumentario ------------------- */
+Vue.component('app-TramiteDocumentario', require('./views/TramiteDocumentario/SolicitudTramiteDocumentario.vue').default);
+Vue.component('app-tramite_areacooperativa', require('./views/TramiteDocumentario/AreaCooperativa.vue').default);
+Vue.component('app-tramite_calificacion', require('./views/TramiteDocumentario/Calificacion.vue').default);
+Vue.component('app-tramite_prioridad', require('./views/TramiteDocumentario/Prioridad.vue').default);
+Vue.component('app-tramite_tipodocumento', require('./views/TramiteDocumentario/TipoDocumento.vue').default);
+Vue.component('app-tramite_tipotramite', require('./views/TramiteDocumentario/TipoTramite.vue').default);
+Vue.component('app-tramite_motivotramite', require('./views/TramiteDocumentario/MotivoTramite.vue').default);
+Vue.component('app-tramite_requisitotramite', require('./views/TramiteDocumentario/RequisitoTramite.vue').default);
+/* ------------------------- Componentes Modulo web ------------------------- */
+Vue.component('app-convenios', require('./views/Web/Convenios.vue').default);
+Vue.component('app-productos', require('./views/Web/Productos.vue').default);
+/* ---------------------- Componentes Modulo Electoral ---------------------- */
+Vue.component('app-electoral', require('./views/Electoral/Candidato.vue').default);
 
+
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
@@ -55,18 +72,51 @@ import TipoSocio from './views/TipoSocio'
 import SolicitudIngreso from './views/SolicitudIngreso'
 import Parentesco from './views/Parentesco'
 import RiesgoCrediticio from './views/RiesgoCrediticio'
-import TramiteDocumentario from './views/tramitedocumentario/ListarTramite'
-import Test from './views/Test'
-import Usuario from './views/Usuario'
+
+/* -------------------------------------------------------------------------- */
+// Modulo Admision
+/* -------------------------------------------------------------------------- */
+import BuscarSolicitudIngreso from './views/BuscarSolicitudIngreso'
+
+/* -------------------------------------------------------------------------- */
+// Modulo tramite documentario
+/* -------------------------------------------------------------------------- */
+import TramiteDocumentario from './views/TramiteDocumentario/SolicitudTramiteDocumentario'
+import Tramite_AreaCooperativa from './views/TramiteDocumentario/AreaCooperativa'
+import Tramite_Calificacion from './views/TramiteDocumentario/Calificacion'
+import Tramite_Prioriad from './views/TramiteDocumentario/Prioridad'
+import Tramite_TipoDocumento from './views/TramiteDocumentario/TipoDocumento'
+import Tramite_TipoTramite from './views/TramiteDocumentario/TipoTramite'
+import Tramite_MotivoTramite from './views/TramiteDocumentario/MotivoTramite'
+import Tramite_RequisitoTramite from './views/TramiteDocumentario/RequisitoTramite'
+/* -------------------------------------------------------------------------- */
+// Modulo Web
+/* -------------------------------------------------------------------------- */
+import Convenios from './views/Web/Convenios'
+import Productos from './views/Web/Productos'
+/* -------------------------------------------------------------------------- */
+// Modulo Electoral
+/* -------------------------------------------------------------------------- */
+import Candidato from './views/Electoral/Candidato'
 
 
+/* -------------------------------------------------------------------------- */
+// Gestion Usuarios
+/* -------------------------------------------------------------------------- */
+import Usuario from './views/session/Usuario'
+
+/*
+//Caja npm run watch
+ */
+import CajaApertura from './views/Caja/CajaApertura'
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 import auth from './middleware/auth';
 import log from './middleware/log';
 
 const router = new VueRouter({
     mode: 'history',
-    routes: [
-        {
+    routes: [{
             path: '/dashboard',
             name: 'dashboard',
             component: Dashboard,
@@ -90,6 +140,8 @@ const router = new VueRouter({
                 middleware: [auth, log],
             },
         },
+
+
         {
             path: '/ubigeo',
             name: 'ubigeo',
@@ -138,6 +190,7 @@ const router = new VueRouter({
                 middleware: [auth, log],
             },
         },
+        // Tipo Covenios
         {
             path: '/tipoConvenio',
             name: 'tipoConvenio',
@@ -146,6 +199,7 @@ const router = new VueRouter({
                 middleware: [auth, log],
             },
         },
+
         {
             path: '/institucionEducativa',
             name: 'institucionEducativa',
@@ -226,14 +280,7 @@ const router = new VueRouter({
                 middleware: [auth, log],
             },
         },
-        {
-            path: '/solicitudIngreso',
-            name: 'solicitudIngreso',
-            component: SolicitudIngreso,
-            meta: {
-                middleware: [auth, log],
-            },
-        },
+        //  Parentestco
         {
             path: '/parentesco',
             name: 'parentesco',
@@ -242,6 +289,7 @@ const router = new VueRouter({
                 middleware: [auth, log],
             },
         },
+        //  Riesgo Crediticio
         {
             path: '/riesgoCrediticio',
             name: 'riesgoCrediticio',
@@ -250,30 +298,168 @@ const router = new VueRouter({
                 middleware: [auth, log],
             },
         },
+
+         /* -------------------------------------------------------------------------- */
+        // Modulo Admision
+        /* -------------------------------------------------------------------------- */
+        // Solicitud Admision
         {
-            path: '/listart',
-            name: 'listartramite',
+            path: '/solicitudIngreso',
+            name: 'solicitudIngreso',
+            component: SolicitudIngreso,
+            meta: {
+                middleware: [auth, log],
+            },
+        },
+        // Buscar Solicitud Admision
+        {
+            path: '/buscarSolicitudIngreso',
+            name: 'buscarSolicitudIngreso',
+            component: BuscarSolicitudIngreso,
+            meta: {
+                middleware: [auth, log],
+            },
+        },
+        {
+            path: "/solicitudIngreso/:id?",
+            name: 'solicitudIngresoId',
+            component: SolicitudIngreso,
+            meta: {
+                middleware: [auth, log],
+            },
+
+        },
+        
+        /* -------------------------------------------------------------------------- */
+        // Modulo tramite Documentario
+        /* -------------------------------------------------------------------------- */
+        // Solicitud Tramite Documentario
+        {
+            path: '/SolicitudTramiteDocumentario',
+            name: 'SolicitudTramiteDocumentario',
             component: TramiteDocumentario,
             meta: {
-                middleware: [auth, log],              
+                middleware: [auth, log],
             },
         },
+        //  Tramite Area Cooperativa
         {
-            path: '/test',
-            name: 'test',
-            component: Test,
+            path: '/Tramite_areacooperativa',
+            name: 'Tramite_areacooperativa',
+            component: Tramite_AreaCooperativa,
             meta: {
                 middleware: [auth, log],              
             },
         },
+        //  Tramite Calificacion
+        {
+            path: '/Tramite_Calificacion',
+            name: 'Tramite_Calificacion',
+            component: Tramite_Calificacion,
+            meta: {
+                middleware: [auth, log],              
+            },
+        },
+        //  Tramite Prioridad
+        {
+            path: '/Tramite_Prioridad',
+            name: 'Tramite_Prioridad',
+            component: Tramite_Prioriad,
+            meta: {
+                middleware: [auth, log],              
+            },
+        },
+        //  Tramite Tipo Documento
+        {
+            path: '/Tramite_TipoDocumento',
+            name: 'Tramite_TipoDocumento',
+            component: Tramite_TipoDocumento,
+            meta: {
+                middleware: [auth, log],              
+            },
+        },
+        //  Tramite Tipo
+        {
+            path: '/Tramite_TipoTramite',
+            name: 'Tramite_TipoTramite',
+            component: Tramite_TipoTramite,
+            meta: {
+                middleware: [auth, log],              
+            },
+        },
+        //  Tramite Motivo
+        {
+            path: '/Tramite_MotivoTramite',
+            name: 'Tramite_MotivoTramite',
+            component: Tramite_MotivoTramite,
+            meta: {
+                middleware: [auth, log],              
+            },
+        },
+        //  Tramite Requisito
+        {
+            path: '/Tramite_RequisitoTramite',
+            name: 'Tramite_RequisitoTramite',
+            component: Tramite_RequisitoTramite,
+            meta: {
+                middleware: [auth, log],              
+            },
+        },
+
+        /* -------------------------------------------------------------------------- */
+        /* ------------------------------- Modulo Web ------------------------------- */
+        /* -------------------------------------------------------------------------- */
+        // Covenios-Web
+        {
+            path: '/convenios',
+            name: 'convenios',
+            component: Convenios,
+            meta: {
+                middleware: [auth, log],
+            },
+        },
+        // Productos-Web
+        {
+            path: '/productos',
+            name: 'productos',
+            component: Productos,
+            meta: {
+                middleware: [auth, log],
+            },
+        },
+
+        
+        /* -------------------------------------------------------------------------- */
+        /* -------------------------------- Electoral ------------------------------- */
+        /* -------------------------------------------------------------------------- */
+        // Candidato
+        {
+            path: '/candidato',
+            name: 'candidato',
+            component: Candidato,
+            meta: {
+                middleware: [auth, log],
+            },
+        },
+        /* -------------------------------------------------------------------------- */
+        /* ---------------------------- Gestion Usuarios ---------------------------- */
+        /* -------------------------------------------------------------------------- */
         {
             path: '/usuario',
             name: 'usuario',
             component: Usuario,
             meta: {
-                middleware: [auth, log],              
+                middleware: [auth, log],
             },
-        }
+        },
+        {
+            path: '/cajaapertura',
+            name: 'cajaapertura',
+            component: CajaApertura,
+            meta: {
+                middleware: [auth, log],
+            },
+        },
     ],
 });
 
@@ -289,15 +475,17 @@ function nextFactory(context, middleware, index) {
         // Then run the subsequent Middleware with a new
         // `nextMiddleware()` callback.
         const nextMiddleware = nextFactory(context, middleware, index + 1);
-        subsequentMiddleware({ ...context, next: nextMiddleware });
+        subsequentMiddleware({
+            ...context,
+            next: nextMiddleware
+        });
     };
 }
 
 router.beforeEach((to, from, next) => {
     if (to.meta.middleware) {
-        const middleware = Array.isArray(to.meta.middleware)
-            ? to.meta.middleware
-            : [to.meta.middleware];
+        const middleware = Array.isArray(to.meta.middleware) ?
+            to.meta.middleware : [to.meta.middleware];
 
         const context = {
             from,
@@ -307,7 +495,10 @@ router.beforeEach((to, from, next) => {
         };
         const nextMiddleware = nextFactory(context, middleware, 1);
 
-        return middleware[0]({ ...context, next: nextMiddleware });
+        return middleware[0]({
+            ...context,
+            next: nextMiddleware
+        });
     }
 
     return next();
@@ -316,16 +507,17 @@ router.beforeEach((to, from, next) => {
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
- * or customize the JavaScript  scaffolding to fit your unique needs.
+ * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
 const app = new Vue({
     el: '#app',
     router,
-    components: { App },
+    components: {
+        App
+    },
     template: '<App/>',
     vuetify: new Vuetify({
 
     }),
 });
-

@@ -1,6 +1,11 @@
 <template v-slot:top>
+
   <v-card>
-    <v-tabs v-model="tab" background-color="indigo darken-2" centered dark>
+    <v-toolbar class="mb-2" color="indigo accent-3" dark flat>
+            <v-toolbar-title>Gestión Ubigeo</v-toolbar-title>
+        </v-toolbar>
+
+    <v-tabs v-model="tab" centered >
       <v-tabs-slider color="dark"></v-tabs-slider>
       <v-tab href="#tab-1"> Departamento </v-tab>
       <v-tab href="#tab-2"> Provincia </v-tab>

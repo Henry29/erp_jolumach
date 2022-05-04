@@ -1,5 +1,8 @@
 <template>
   <v-skeleton-loader v-if="firstLoad" :loading="loading" type="table">
+     <v-toolbar class="mb-2" color="indigo accent-3" dark flat>
+                <v-toolbar-title>Gestión Riesgo Crediticio</v-toolbar-title>
+            </v-toolbar>
     <v-data-table
       dense
       :headers="headers"

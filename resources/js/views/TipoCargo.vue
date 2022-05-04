@@ -193,8 +193,7 @@ export default {
   created() {
     this.initialize();
   },
-  methods: {       
-
+  methods: {
     initialize() {
       let me = this;
       let url = "/getTipoCargo";

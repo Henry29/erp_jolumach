@@ -148,7 +148,7 @@
 
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close">
+                <v-btn color="red darken-1" text @click="close">
                   Cancelar
                 </v-btn>
                 <v-btn color="blue darken-1" text @click="save">
@@ -183,7 +183,7 @@
                   <v-btn
                     class="ma-2"
                     dark
-                    color="indigo darken-2"
+                    color="red darken-2"
                     @click="deleteItemConfirm"
                   >
                     Si
@@ -204,7 +204,7 @@
       </template>
       <template v-slot:[`item.actions`]="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+        <v-icon small  color="red darken-1" @click="deleteItem(item)"> mdi-delete </v-icon>
       </template>
       <template v-slot:no-data>
         No hay resultados. Por favor seleccione un departamento.

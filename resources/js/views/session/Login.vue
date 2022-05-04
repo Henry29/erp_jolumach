@@ -47,6 +47,7 @@
                         ></v-text-field>
                       </validation-provider>
                       <v-row>
+                        <v-col v-if="errorState" style="color: red">Usuario o clave incorrecto(s)</v-col>
                         <v-col class="text-right">
                           <v-btn
                             color="info"
@@ -119,6 +120,7 @@ export default {
   data() {
     return {
       stateLogin: false,
+      errorState: false,
       inputLogin: {
         email: "",
         password: "",
@@ -139,9 +141,12 @@ export default {
           .then(function (response) {
             console.log(response);
             localStorage.Authorization = response.data.token;
+            localStorage.User = JSON.stringify(response.data.ownUser);
+            //localStorage.User = response.data.ownUser;
             me.$router.push({ path: "/dashboard" });
           })
           .catch(function (error) {
+            me.errorState = true;
             console.log(error);
           });
       }

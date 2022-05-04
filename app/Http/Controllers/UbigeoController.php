@@ -20,18 +20,19 @@ class UbigeoController extends Controller
     public function index()
     {
 
-        DB::beginTransaction();
+        //DB::beginTransaction();
 
         try {
-            $tipodoc_identidad = DB::select('SELECT pa_listardepartamentom()');
-            $cursor = $tipodoc_identidad[0]->pa_listardepartamentom;
-            $cursor_data = DB::select('FETCH ALL IN "' . $cursor . '";');
-            DB::commit();
+            //$tipodoc_identidad = DB::select('SELECT pa_listardepartamentom()');
+            //$cursor = $tipodoc_identidad[0]->pa_listardepartamentom;
+            //$cursor_data = DB::select('FETCH ALL IN "' . $cursor . '";');
+            $cursor_data = DB::select('SELECT * FROM tbdepartamento');
+            //DB::commit();
         } catch (Exception $e) {
-            DB::rollBack();
+            //DB::rollBack();
             die("error: " . $e->getMessage());
         } catch (Throwable $e) {
-            DB::rollBack();
+            //DB::rollBack();
             die("error: " . $e->getMessage());
         }
 

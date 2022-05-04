@@ -20,7 +20,7 @@
         "lodash": "^4.17.13",
         "popper.js": "^1.12",
         "resolve-url-loader": "^2.3.1",
-        "sass": "^1.47.0",
+        "sass": "^1.51.0",
         "sass-loader": "^8.0.2",
         "vue": "^2.5.17",
         "vue-template-compiler": "^2.6.10"
@@ -28,9 +28,9 @@
     "dependencies": {
         "eslint-plugin-vue": "^7.1.0",
         "vee-validate": "^3.4.14",
-        "vue-i18n": "^8.26.8",
+        "vue-i18n": "^8.27.1",
         "vue-router": "^3.5.3",
-        "vuetify": "^2.6.2"
+        "vuetify": "^2.6.4"
     },
     "eslintConfig": {
         "vue/valid-v-slot": [
